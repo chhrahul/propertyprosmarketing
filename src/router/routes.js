@@ -6,6 +6,14 @@ const routes = [
     {
         path: '/',
         name: 'login',
+        beforeEnter: (to, from, next) => {
+            const isAuthenticated = localStorage.getItem('token')
+            if (isAuthenticated) {
+                next('/dashboard')
+            } else {
+                next()
+            }
+        },
         component: Login
     },
     {
@@ -16,6 +24,14 @@ const routes = [
     {
         path: '/dashboard',
         component: AppLayout,
+        beforeEnter: (to, from, next) => {
+            const isAuthenticated = localStorage.getItem('token')
+            if (!isAuthenticated) {
+                next('/')
+            } else {
+                next()
+            }
+        },
         children: [
             {
                 path: '/dashboard',

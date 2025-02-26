@@ -1,6 +1,6 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
-
+import AppConfigurator from '@/layout/AppConfigurator.vue';
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 </script>
 
@@ -11,7 +11,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                 <i class="pi pi-bars"></i>
             </button>
             <router-link to="/" class="layout-topbar-logo">
-                <span>Track</span>
+                <span>Affilate Customer Portal</span>
             </router-link>
         </div>
 
@@ -23,7 +23,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                 <button type="button" class="layout-topbar-action">
                     <i class="pi pi-user"></i>
                 </button>
-                <!-- <div class="relative">
+                <div class="relative">
                     <button
                         v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
                         type="button"
@@ -32,7 +32,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                         <i class="pi pi-palette"></i>
                     </button>
                     <AppConfigurator />
-                </div> -->
+                </div>
             </div>
 
             <button

@@ -1,9 +1,10 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { onBeforeMount, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 
 const { layoutState, setActiveMenuItem, toggleMenu } = useLayout();
 
@@ -45,6 +46,10 @@ watch(
 );
 
 function itemClick(event, item) {
+    if(item.label == "Logout"){
+        localStorage.removeItem('token');
+        router.push({ name: 'login' });
+    }
     if (item.disabled) {
         event.preventDefault();
         return;
