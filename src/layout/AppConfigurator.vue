@@ -4,7 +4,7 @@ import { $t, updatePreset, updateSurfacePalette } from '@primevue/themes';
 import Aura from '@primevue/themes/aura';
 import Lara from '@primevue/themes/lara';
 import Nora from '@primevue/themes/nora';
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 
 const { layoutConfig, isDarkTheme } = useLayout();
 
@@ -199,6 +199,13 @@ function onPresetChange() {
 function onMenuModeChange() {
     layoutConfig.menuMode = menuMode.value;
 }
+
+onBeforeMount(() => {
+    setTimeout(() => {
+        updateColors('primary' ,{ name: 'Gunmetal', palette: { 50: '#E3E5E8', 100: '#C8CCD1', 200: '#A2A9B1', 300: '#727D87', 400: '#5A6772', 500: '#48545D', 600: '#3A464D', 700: '#2F3A3F', 800: '#252D30', 900: '#1C2325', 950: '#121719' } })
+    },10)
+});
+
 </script>
 
 <template>

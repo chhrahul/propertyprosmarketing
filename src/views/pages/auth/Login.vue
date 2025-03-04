@@ -23,16 +23,20 @@ const loginHandler = async () => {
     }
     if (formValidation(fromValues) != true) {
         showToast(toast, "error", "Error", formValidation(fromValues));
+        email.value = "";
+        password.value = "";
         return false;
     }
 
-    fromValues.rememberMe = rememberMe.value;
+    // fromValues.rememberMe = rememberMe.value;
     let loginUserDetails = await AuthService.login(fromValues);
-    if(loginUserDetails.length == 0){
-        showToast(toast, "error", "Error", 'User is not exist');
+    if(loginUserDetails.error){
+        showToast(toast, "error", "Error", loginUserDetails.error);
+        email.value = "";
+        password.value = "";
         return false;
     }
-    authStore.setUserLoginDetail(loginUserDetails[0]);
+    authStore.setUserLoginDetail(loginUserDetails);
     router.push({ name: 'dashboard' });
 }
 
