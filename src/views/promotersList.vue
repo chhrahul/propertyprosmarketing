@@ -9,14 +9,11 @@ const fetchPromoters = async () => {
     const response = await axios.get('https://firstpromoter.com/api/v1/promoters/list', {
       headers: { 'X-API-KEY': '5ccaa61589d14c73646651d0a46f3935' },
     });
-    console.log('API response:', response.data);
-    promoters.value = response.data || []; // Assuming API returns an array inside `promoters`
+    promoters.value = response.data || [];
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 };
-
-// console.log('Promoters:', promoters);
 
 // Fetch data when component is mounted
 onMounted(fetchPromoters);
