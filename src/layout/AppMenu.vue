@@ -9,10 +9,11 @@ const model = computed(() => [
         label: 'Home',
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard' }]
     },
-    {
-        label: '',
-        items: [{ label: 'My campaigns', icon: 'pi pi-fw pi-megaphone', to: '/my-campaigns' }]
-    },
+    auth.value?.user?.user?.role !== 'admin'
+        ? {
+            label: '',
+            items: [{ label: 'My campaigns', icon: 'pi pi-fw pi-megaphone', to: '/my-campaigns' }]
+        } : null,
     auth.value?.user?.user?.role === 'admin'
         ? {
             items: [{ label: 'Promoters', icon: 'pi pi-fw pi-user', to: '/promoters' }]
@@ -29,7 +30,7 @@ const model = computed(() => [
             }
         ]
     }
-    
+
 ].filter(Boolean)); 
 </script>
 
