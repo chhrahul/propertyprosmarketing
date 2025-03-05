@@ -75,7 +75,7 @@ const routes = [
     
             if (!token) {
                 next('/');
-            } else if (!auth.user.user || auth.user.user.role !== 'admin') {
+            } else if (!auth.user.user || auth.user.user.role !== 'user') {
                 next('/unauthorized');
             } else {
                 next(); 
