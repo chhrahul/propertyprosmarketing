@@ -1,19 +1,21 @@
 import AppLayout from '@/layout/AppLayout.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import Login from '@/views/pages/auth/Login.vue';
-import promotersList from '@/views/promotersList.vue';
-import myCampaign from '@/views/myCampaign.vue';
+import PromotersList from '@/views/PromotersList.vue';
+import Campaign from '@/views/Campaign.vue';
+import CampaignDetails from '@/views/CampaignDetails.vue';
 import ForgetPassword from '@/views/pages/auth/ForgetPassword.vue';
+
 const routes = [
     {
         path: '/',
         name: 'login',
         beforeEnter: (to, from, next) => {
-            const isAuthenticated = localStorage.getItem('token')
+            const isAuthenticated = localStorage.getItem('token');
             if (isAuthenticated) {
-                next('/dashboard')
+                next('/dashboard');
             } else {
-                next()
+                next();
             }
         },
         component: Login
@@ -27,66 +29,70 @@ const routes = [
         path: '/dashboard',
         component: AppLayout,
         beforeEnter: (to, from, next) => {
-            const isAuthenticated = localStorage.getItem('token')
+            const isAuthenticated = localStorage.getItem('token');
             if (!isAuthenticated) {
-                next('/')
+                next('/');
             } else {
-                next()
+                next();
             }
         },
         children: [
             {
-                path: '/dashboard',
+                path: '', // Empty because it's the default child route
                 name: 'dashboard',
                 component: Dashboard
-            },
+            }
         ]
     },
     {
         path: '/promoters',
         component: AppLayout,
         beforeEnter: (to, from, next) => {
-            const token = localStorage.getItem('token'); // Check if user is authenticated
+            const token = localStorage.getItem('token');
             const auth = JSON.parse(localStorage.getItem('auth'));
-    
+
             if (!token) {
                 next('/');
-            } else if (!auth.user.user || auth.user.user.role !== 'admin') {
+            } else if (!auth?.user?.user || auth.user.user.role !== 'admin') {
                 next('/unauthorized');
             } else {
-                next(); 
+                next();
             }
         },
         children: [
             {
-                path: '/promoters',
+                path: '', // Empty because it's the default child route
                 name: 'Promoters',
-                component: promotersList
-            },
+                component: PromotersList
+            }
         ]
     },
-    ,
     {
-        path: '/my-campaigns',
+        path: '/campaigns',
         component: AppLayout,
         beforeEnter: (to, from, next) => {
-            const token = localStorage.getItem('token'); // Check if user is authenticated
+            const token = localStorage.getItem('token');
             const auth = JSON.parse(localStorage.getItem('auth'));
-    
+
             if (!token) {
                 next('/');
-            } else if (!auth.user.user || auth.user.user.role !== 'user') {
+            } else if (!auth?.user?.user || auth.user.user.role !== 'user') {
                 next('/unauthorized');
             } else {
-                next(); 
+                next();
             }
         },
         children: [
             {
-                path: '/my-campaigns',
-                name: 'my-campaigns',
-                component: myCampaign
+                path: '', // Default route for /campaigns
+                name: 'Campaigns',
+                component: Campaign
             },
+            {
+                path: 'campaign-details/:id', // Child route inside /campaigns
+                name: 'CampaignDetails',
+                component: CampaignDetails
+            }
         ]
     }
 ];

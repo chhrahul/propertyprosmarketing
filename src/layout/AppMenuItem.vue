@@ -69,7 +69,10 @@ function itemClick(event, item) {
 }
 
 function checkActiveRoute(item) {
-    return route.path === item.to;
+    console.log("route path",route.path, "item path", item.to);
+    if (item.to === '/') return 0;
+
+    return route.path.startsWith(item.to);
 }
 </script>
 

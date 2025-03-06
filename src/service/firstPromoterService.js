@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = import.meta.env.VITE_API_KEY; // Use environment variable
+const API_KEY = import.meta.env.PROMOTER_API_KEY;
 
 export async function fetchDashboardData(userpromoterId) {
     try {

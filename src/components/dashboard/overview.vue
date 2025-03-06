@@ -46,8 +46,8 @@ export default {
         };
     },
     async mounted() {
-        const token = localStorage.getItem('token');
-        const userpromoter = await AuthService.getUserMeta(token);
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        const userpromoter = await AuthService.getUserMeta(auth.user.user.id,'promoterId');
         const data = await fetchDashboardData(userpromoter.userpromoterId);
         if (data) {
             this.dashboardData[0].value = data.clicks;

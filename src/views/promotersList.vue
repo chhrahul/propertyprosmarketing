@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { Copy, Eye } from 'lucide-vue-next';
 import axios from 'axios';
 
 const promoters = ref([]); // Reactive variable to store API data

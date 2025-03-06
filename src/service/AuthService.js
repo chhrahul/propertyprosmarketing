@@ -16,9 +16,9 @@ export const AuthService = {
             };
         }
     },
-    getUserMeta: async (token) => {
+    getUserMeta: async (userId,key,token) => {
         try {
-            let endpoint = `${baseURL}auth/get-user-meta?key=promoterId`;
+            let endpoint = `${baseURL}auth/get-user-meta?userId=${userId}&key=${key}`;
             let user = await axios.get(endpoint, {
                 headers: {
                     "Authorization": "Bearer " + token,
@@ -29,8 +29,8 @@ export const AuthService = {
                 userpromoterId: user.data.value,
             }
         } catch (error) {
-            localStorage.removeItem('token');
-            router.push({ name: 'login' });
+            // localStorage.removeItem('token');
+            // router.push({ name: 'login' });
             console.log("error : "+error.response?.data?.message);
         }
     },
