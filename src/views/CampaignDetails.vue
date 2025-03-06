@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { defineProps, computed } from "vue";
 import { BarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
@@ -43,4 +43,9 @@ const chartOptions = {
       <Bar :data="chartData" :options="chartOptions" />
     </div>
   </div>
+</template> -->
+
+
+<template>
+  <h1>Campaign DEtails</h1>
 </template>

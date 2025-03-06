@@ -1,5 +1,6 @@
 import axios from "axios";
 const baseURL = import.meta.env.VITE_API_BASE_URL;
+import HTTP from "@/axios";
 export const AuthService = {
     login: async (payload) => {
         try {
@@ -16,14 +17,17 @@ export const AuthService = {
             };
         }
     },
-    getUserMeta: async (userId,key,token) => {
+    getUserMeta: async (userId,key) => {
         try {
-            let endpoint = `${baseURL}auth/get-user-meta?userId=${userId}&key=${key}`;
-            let user = await axios.get(endpoint, {
-                headers: {
-                    "Authorization": "Bearer " + token,
-                },
-            });
+            let endpoint = `auth/get-user-meta?userId=${userId}&key=${key}`;
+            let user = await HTTP.get(endpoint);
+
+
+            // let user = await axios.get(endpoint, {
+            //     headers: {
+            //         "Authorization": "Bearer " + token,
+            //     },
+            // });
             
             return {
                 userpromoterId: user.data.value,

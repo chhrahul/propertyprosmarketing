@@ -41,60 +41,70 @@ const routes = [
                 path: '', // Empty because it's the default child route
                 name: 'dashboard',
                 component: Dashboard
-            }
-        ]
-    },
-    {
-        path: '/promoters',
-        component: AppLayout,
-        beforeEnter: (to, from, next) => {
-            const token = localStorage.getItem('token');
-            const auth = JSON.parse(localStorage.getItem('auth'));
-
-            if (!token) {
-                next('/');
-            } else if (!auth?.user?.user || auth.user.user.role !== 'admin') {
-                next('/unauthorized');
-            } else {
-                next();
-            }
-        },
-        children: [
+            },
             {
-                path: '', // Empty because it's the default child route
-                name: 'Promoters',
-                component: PromotersList
-            }
-        ]
-    },
-    {
-        path: '/campaigns',
-        component: AppLayout,
-        beforeEnter: (to, from, next) => {
-            const token = localStorage.getItem('token');
-            const auth = JSON.parse(localStorage.getItem('auth'));
-
-            if (!token) {
-                next('/');
-            } else if (!auth?.user?.user || auth.user.user.role !== 'user') {
-                next('/unauthorized');
-            } else {
-                next();
-            }
-        },
-        children: [
-            {
-                path: '', // Default route for /campaigns
+                path: '/campaigns',
                 name: 'Campaigns',
                 component: Campaign
             },
             {
-                path: 'campaign-details/:id', // Child route inside /campaigns
+                path: '/campaign/details/:id',
                 name: 'CampaignDetails',
                 component: CampaignDetails
             }
         ]
-    }
+    },
+    // {
+    //     path: '/promoters',
+    //     component: AppLayout,
+    //     beforeEnter: (to, from, next) => {
+    //         const token = localStorage.getItem('token');
+    //         const auth = JSON.parse(localStorage.getItem('auth'));
+
+    //         if (!token) {
+    //             next('/');
+    //         } else if (!auth?.user?.user || auth.user.user.role !== 'admin') {
+    //             next('/unauthorized');
+    //         } else {
+    //             next();
+    //         }
+    //     },
+    //     children: [
+    //         {
+    //             path: '', // Empty because it's the default child route
+    //             name: 'Promoters',
+    //             component: PromotersList
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/campaigns',
+    //     component: AppLayout,
+    //     beforeEnter: (to, from, next) => {
+    //         const token = localStorage.getItem('token');
+    //         const auth = JSON.parse(localStorage.getItem('auth'));
+
+    //         if (!token) {
+    //             next('/');
+    //         } else if (!auth?.user?.user || auth.user.user.role !== 'user') {
+    //             next('/unauthorized');
+    //         } else {
+    //             next();
+    //         }
+    //     },
+    //     children: [
+    //         {
+    //             path: '', // Default route for /campaigns
+    //             name: 'Campaigns',
+    //             component: Campaign
+    //         },
+    //         {
+    //             path: 'campaign-details/:id', // Child route inside /campaigns
+    //             name: 'CampaignDetails',
+    //             component: CampaignDetails
+    //         }
+    //     ]
+    // }
 ];
 
 export default routes;
