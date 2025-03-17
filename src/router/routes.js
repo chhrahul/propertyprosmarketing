@@ -1,8 +1,10 @@
 import AppLayout from '@/layout/AppLayout.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import Login from '@/views/pages/auth/Login.vue';
-import PromotersList from '@/views/PromotersList.vue';
 import Campaign from '@/views/Campaign.vue';
+import homeDash from '@/views/homeDash.vue';
+import commission from '@/views/commission.vue';
+import profile from '@/views/profile.vue';
 import CampaignDetails from '@/views/CampaignDetails.vue';
 import ForgetPassword from '@/views/pages/auth/ForgetPassword.vue';
 
@@ -38,9 +40,9 @@ const routes = [
         },
         children: [
             {
-                path: '', // Empty because it's the default child route
+                path: '',
                 name: 'dashboard',
-                component: Dashboard
+                component: homeDash
             },
             {
                 path: '/campaigns',
@@ -51,6 +53,21 @@ const routes = [
                 path: '/campaign/details/:id',
                 name: 'CampaignDetails',
                 component: CampaignDetails
+            },
+            {
+                path: '/homeDash',
+                name: 'homeDash',
+                component: homeDash
+            },
+            {
+                path: '/commission',
+                name: 'commission',
+                component: commission
+            },
+            {
+                path: '/profile',
+                name: 'Profile',
+                component: profile
             }
         ]
     },

@@ -12,16 +12,32 @@ const model = computed(() =>
     },
     auth.value?.user?.user?.role !== "admin"
       ? {
-          label: "",
-          items: [
-            { label: "Campaigns", icon: "pi pi-fw pi-megaphone", to: "/campaigns" },
-          ],
-        }
+        label: "",
+        items: [
+          { label: "Commission", icon: "pi pi-wallet", to: "/commission" },
+        ],
+      }
       : null,
+    auth.value?.user?.user?.role !== "admin"
+      ? {
+        label: "",
+        items: [
+          { label: "Referrals", icon: "pi pi-share-alt", to: "/referrals" },
+        ],
+      }
+      : null,
+    // auth.value?.user?.user?.role !== "admin"
+    //   ? {
+    //     label: "",
+    //     items: [
+    //       { label: "Campaigns", icon: "pi pi-fw pi-megaphone", to: "/campaigns" },
+    //     ],
+    //   }
+    //   : null,
     auth.value?.user?.user?.role === "admin"
       ? {
-          items: [{ label: "Promoters", icon: "pi pi-fw pi-user", to: "/promoters" }],
-        }
+        items: [{ label: "Promoters", icon: "pi pi-fw pi-user", to: "/promoters" }],
+      }
       : null,
     {
       label: "",
