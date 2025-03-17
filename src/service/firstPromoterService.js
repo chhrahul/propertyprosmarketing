@@ -1,5 +1,4 @@
 import axios from 'axios';
-import axios from 'axios';
 import HTTP from '@/axios';
 const API_KEY = import.meta.env.VITE_PROMOTER_API_KEY;
 export async function fetchDashboardData(userpromoterId) {
