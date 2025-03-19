@@ -17,12 +17,28 @@ export const AuthService = {
             };
         }
     },
+    changePassword: async (payload) => {
+        try {
+            let endpoint = `${baseURL}auth/change-password`;
+            let response = await axios.post(endpoint, payload);
+            return {
+                message: response.data.message,
+            };
+        } catch (error) {
+            return {
+                error: error.response?.data?.message || "Failed to Change Password.",
+            };
+        }
+    },
     getUserMeta: async (userId,key,token) => {
         try {
             let endpoint = `auth/get-user-meta?userId=${userId}&key=${key}`;
             let user = await HTTP.get(endpoint,{
                 headers: { Authorization: `Bearer ${token}` }
             });
+
+            console.log(user);
+
             return user.data.value;
         } catch (error) {
             localStorage.removeItem('token');

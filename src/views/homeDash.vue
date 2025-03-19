@@ -100,19 +100,20 @@ const copyToClipboard = (text) => {
                 </table>
             </div>
 
-            <div class="flex justify-between items-center mb-4">
-                <h5 class="text-lg font-medium">Links</h5>
-                <div class="text-sm text-gray-600 mb-3">
+            <div class="flex flex-wrap justify-between items-center mb-4">
+                <h5 class="text-lg font-medium w-full sm:w-auto mb-2 sm:mb-0">Links</h5>
+                <div class="text-sm text-gray-600 w-full sm:w-auto text-center sm:text-right">
                     <strong>{{ campaignData?.name }}</strong>
-                    <span class="mx-2">•</span>
+                    <span class="mx-2 hidden sm:inline">•</span> 
+                    <br class="sm:hidden" />
                     {{ commissionMessage }}
-                    <span class="mx-2">•</span>
+                    <span class="mx-2 hidden sm:inline">•</span> 
+                    <br class="sm:hidden" />
                     Joined {{ new Date(affiliateData.created_at).toLocaleDateString() }}
                 </div>
-
             </div>
 
-            <div class="mb-6">
+            <div class="mb-6 overflow-x-auto">
                 <table class="w-full border text-center">
                     <thead class="bg-gray-100">
                         <tr>
