@@ -17,6 +17,7 @@ const fetchAffiliateData = async () => {
     if (!userId) return; 
     try {
         const affiliateId = await AuthService.getUserMeta(userId, "affiliateId",getUser.value.token);
+        if (!affiliateId) return;
         const response = await rewardfulService.getAffiliate(affiliateId);
         affiliateData.value = response.data;
         fetchCampaignData();

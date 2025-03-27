@@ -14,7 +14,7 @@ const model = computed(() =>
       ? {
         label: "",
         items: [
-          { label: "Commission", icon: "pi pi-wallet", to: "/commission" },
+          { label: "Commission", icon: "pi pi-fw pi-dollar", to: "/commission" },
         ],
       }
       : null,
@@ -26,14 +26,14 @@ const model = computed(() =>
         ],
       }
       : null,
-    // auth.value?.user?.user?.role !== "admin"
-    //   ? {
-    //     label: "",
-    //     items: [
-    //       { label: "Campaigns", icon: "pi pi-fw pi-megaphone", to: "/campaigns" },
-    //     ],
-    //   }
-    //   : null,
+    auth.value?.user?.user?.role !== "admin"
+      ? {
+        label: "",
+        items: [
+          { label: "Payouts", icon: "pi pi-fw pi-credit-card", to: "/payouts" },
+        ],
+      }
+      : null,
     auth.value?.user?.user?.role === "admin"
       ? {
         items: [{ label: "Promoters", icon: "pi pi-fw pi-user", to: "/promoters" }],

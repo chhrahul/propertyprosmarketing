@@ -1,6 +1,7 @@
 import axios from "axios";
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 import HTTP from "@/axios";
+import router from "@/router";
 export const AuthService = {
     login: async (payload) => {
         try {
@@ -37,10 +38,9 @@ export const AuthService = {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            console.log(user);
-
             return user.data.value;
         } catch (error) {
+            alert("Session Expired");
             localStorage.removeItem('token');
             router.push({ name: 'login' });
             console.log("error : "+error.response?.data?.message);

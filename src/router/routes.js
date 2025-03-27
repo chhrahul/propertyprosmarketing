@@ -3,9 +3,13 @@ import Dashboard from '@/views/Dashboard.vue';
 import Login from '@/views/pages/auth/Login.vue';
 import homeDash from '@/views/homeDash.vue';
 import commission from '@/views/commission.vue';
+import commissionNew from '@/views/commissionNew.vue';
 import referrals from '@/views/referrals.vue';
+import payouts from '@/views/payouts.vue';
 import profile from '@/views/profile.vue';
+import adminDash from '@/views/adminDash.vue';
 import ForgetPassword from '@/views/pages/auth/ForgetPassword.vue';
+import PayoutDetails from '@/views/payoutDetails.vue';
 
 const routes = [
     {
@@ -41,7 +45,13 @@ const routes = [
             {
                 path: '',
                 name: 'dashboard',
-                component: homeDash
+                component: () => {
+                    let userDataJson = localStorage.getItem('auth');
+                    let userData = JSON.parse(userDataJson);
+                    const userRole = userData?.user?.user?.role;
+                    console.log(userRole);
+                    return userRole === 'admin' ? adminDash : homeDash;
+                }
             },
             {
                 path: '/homeDash',
@@ -51,7 +61,7 @@ const routes = [
             {
                 path: '/commission',
                 name: 'commission',
-                component: commission
+                component: commissionNew
             },
             {
                 path: '/referrals',
@@ -59,9 +69,24 @@ const routes = [
                 component: referrals
             },
             {
+                path: '/payouts',
+                name: 'payouts',
+                component: payouts
+            },
+            {
                 path: '/profile',
                 name: 'Profile',
                 component: profile
+            },
+            {
+                path: '/adminDash',
+                name: 'adminDash',
+                component: adminDash
+            },
+            {
+                path: '/PayoutDetails/:id',
+                name: 'PayoutDetails',
+                component: PayoutDetails
             }
         ]
     },

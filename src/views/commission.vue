@@ -17,7 +17,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="bg-white">
+                    <tr v-if="loading">
+                        <td colspan="6" class="py-4 text-center text-gray-500">
+                            <div class="flex justify-center items-center">
+                                <svg class="animate-spin h-6 w-6 text-blue-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                </svg>
+                                <span>Loading Commissions...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr v-else class="bg-white">
                         <td class="p-4 border">
                             ${{ (commissionStats?.unpaid?.cents || 0) / 100 }} USD
                         </td>
@@ -52,8 +63,10 @@ const { getUser } = storeToRefs(store);
 
 const affiliateData = ref(null);
 const commissionStats = ref(null);
+const loading = ref(false);
 
 const fetchAffiliateData = async () => {
+    loading.value = true;  
     let userId = getUser.value?.user?.id;
     if (!userId) return;
 
@@ -68,6 +81,8 @@ const fetchAffiliateData = async () => {
         console.log("Commission Stats:", commissionStats.value);
     } catch (error) {
         console.error("Error fetching affiliate data:", error);
+    }finally{
+        loading.value = false;  
     }
 };
 

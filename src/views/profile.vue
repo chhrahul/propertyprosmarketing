@@ -69,9 +69,9 @@
                 <div class="mb-5">
                     <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900">Confirm New
                         Password</label>
-                    <input type="password" id="confirm-password" v-model="passwordData.confirm"
+                    <input type="password" id="confirm-password" :toggleMask="true" v-model="passwordData.confirm"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-3"
-                        required />
+                        required />  
                 </div>
                 <button type="submit"
                     class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5">Change
