@@ -5,6 +5,7 @@ import { rewardfulService } from "../service/rewardfulService";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth";
 import { AuthService } from '@/service/authService';
+import { PROPERTY_PROS_MARKETING_URL } from '@/utils/Enums'
 
 const store = useAuthStore();
 const { getUser } = storeToRefs(store);
@@ -14,9 +15,9 @@ const campaignData = ref(null);
 
 const fetchAffiliateData = async () => {
     let userId = getUser.value?.user?.id;
-    if (!userId) return; 
+    if (!userId) return;
     try {
-        const affiliateId = await AuthService.getUserMeta(userId, "affiliateId",getUser.value.token);
+        const affiliateId = await AuthService.getUserMeta(userId, "affiliateId", getUser.value.token);
         if (!affiliateId) return;
         const response = await rewardfulService.getAffiliate(affiliateId);
         affiliateData.value = response.data;
@@ -28,7 +29,7 @@ const fetchAffiliateData = async () => {
 
 
 const fetchCampaignData = async () => {
-    if (!affiliateData.value || !affiliateData.value.campaign) return; 
+    if (!affiliateData.value || !affiliateData.value.campaign) return;
     const campaignId = affiliateData.value.campaign.id;
     if (!campaignId) return;
     try {
@@ -47,7 +48,7 @@ watchEffect(() => {
     console.log("Affiliate Data:", affiliateData.value);
     console.log("Campaign Data:", campaignData.value);
 });
- 
+
 const commissionMessage = computed(() => {
     if (!campaignData.value) return "Loading commission details...";
 
@@ -105,10 +106,10 @@ const copyToClipboard = (text) => {
                 <h5 class="text-lg font-medium w-full sm:w-auto mb-2 sm:mb-0">Links</h5>
                 <div class="text-sm text-gray-600 w-full sm:w-auto text-center sm:text-right">
                     <strong>{{ campaignData?.name }}</strong>
-                    <span class="mx-2 hidden sm:inline">•</span> 
+                    <span class="mx-2 hidden sm:inline">•</span>
                     <br class="sm:hidden" />
                     {{ commissionMessage }}
-                    <span class="mx-2 hidden sm:inline">•</span> 
+                    <span class="mx-2 hidden sm:inline">•</span>
                     <br class="sm:hidden" />
                     Joined {{ new Date(affiliateData.created_at).toLocaleDateString() }}
                 </div>
@@ -128,8 +129,10 @@ const copyToClipboard = (text) => {
                     <tbody>
                         <tr class="border-t" v-for="link in affiliateData.links" :key="link.id">
                             <td class="p-3 text-left">
-                                <a class="text-blue-500" :href="link.url" target="_blank">
-                                    {{ link.url }}
+                                <a class="text-blue-500"
+                                    :href="PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token"
+                                    target="_blank">
+                                    {{ PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token }}
                                 </a>
                                 <p class="text-sm text-gray-600">👉 Add <code>?via={{ link.token }}</code> to any URL.
                                 </p>
