@@ -138,7 +138,7 @@ const copyToClipboard = (text) => {
                                 </p>
                             </td>
                             <td class="p-3">
-                                <button @click="copyToClipboard(link.url)"
+                                <button @click="copyToClipboard( PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token)"
                                     class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Copy</button>
                             </td>
                             <td class="p-3">{{ link.visitors }}</td>
@@ -162,3 +162,4 @@ const copyToClipboard = (text) => {
         </div>
     </div>
 </template>
+<!-- Mac: sudo killall -HUP mDNSResponder -->
