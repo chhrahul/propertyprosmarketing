@@ -6,12 +6,18 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth";
 import { AuthService } from '@/service/authService';
 import { PROPERTY_PROS_MARKETING_URL } from '@/utils/Enums'
+import { useToast } from 'primevue/usetoast';
+import { showToast } from '@/utils/Helper'
 
 const store = useAuthStore();
+const toast = useToast();
 const { getUser } = storeToRefs(store);
 
 const affiliateData = ref(null);
 const campaignData = ref(null);
+const isModalOpen = ref(false);
+const newLinkToken = ref('');
+const loading = ref(false);
 
 const fetchAffiliateData = async () => {
     let userId = getUser.value?.user?.id;
@@ -23,10 +29,9 @@ const fetchAffiliateData = async () => {
         affiliateData.value = response.data;
         fetchCampaignData();
     } catch (error) {
-        console.error("Error fetching affiliate data:", error);
+        showToast(toast, "error", "Error", error);
     }
 };
-
 
 const fetchCampaignData = async () => {
     if (!affiliateData.value || !affiliateData.value.campaign) return;
@@ -36,7 +41,7 @@ const fetchCampaignData = async () => {
         const response = await rewardfulService.getCampaign(campaignId);
         campaignData.value = response.data;
     } catch (error) {
-        console.error("Error fetching campaign data:", error);
+        showToast(toast, "error", "Error", error);
     }
 };
 
@@ -69,10 +74,53 @@ const commissionMessage = computed(() => {
 const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => {
         alert("Copied to clipboard!");
-    }).catch((err) => {
-        console.error("Failed to copy:", err);
+    }).catch((error) => {
+        showToast(toast, "error", "Error", error);
     });
 };
+
+function openModal() {
+    isModalOpen.value = true;
+}
+
+function closeModal() {
+    isModalOpen.value = false;
+    newLinkToken.value = '';
+}
+
+
+const createNewLink = async () => {
+    if (newLinkToken.value.trim() === '') {
+        showToast(toast, "error", "Error", 'Token cannot be empty!');
+        return;
+    }
+
+    try {
+        const userId = getUser.value?.user?.id;
+        const affiliateId = await AuthService.getUserMeta(userId, "affiliateId", getUser.value.token);
+
+        if (!affiliateId) {
+            showToast(toast, "error", "Error", "Affiliate ID not found.");
+            return;
+        }
+        loading.value = true;
+        const response = await rewardfulService.createNewAffiliateLink({ affiliate_id: affiliateId, token: newLinkToken.value.trim() });
+
+        if (response?.error) {
+            showToast(toast, "error", "Error", response?.error);
+            return;
+        }
+        closeModal();
+        await fetchAffiliateData();
+
+    } catch (error) {
+        showToast(toast, "error", "Error", error);
+        closeModal();
+    } finally {
+        loading.value = false;
+    }
+}
+
 </script>
 
 <template>
@@ -138,7 +186,8 @@ const copyToClipboard = (text) => {
                                 </p>
                             </td>
                             <td class="p-3">
-                                <button @click="copyToClipboard( PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token)"
+                                <button
+                                    @click="copyToClipboard(PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token)"
                                     class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Copy</button>
                             </td>
                             <td class="p-3">{{ link.visitors }}</td>
@@ -147,6 +196,13 @@ const copyToClipboard = (text) => {
                         </tr>
                     </tbody>
                 </table>
+                <div class="mb-4 text-right">
+                    <button @click="openModal"
+                        class="bg-green-500 text-white px-4 py-2 my-2 rounded text-sm hover:bg-green-600">
+                        Create New Link
+                    </button>
+                </div>
+
             </div>
         </div>
         <div v-else class="flex justify-center items-center py-10">
@@ -160,6 +216,53 @@ const copyToClipboard = (text) => {
                     fill="currentFill" />
             </svg>
         </div>
+
+        <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div class="panel bg-white p-3 p-md-5 rounded-lg shadow-lg w-96">
+                <h1 class="h5 mt-0 mb-3">Create a New Link</h1>
+
+                <form class="new_affiliate_link" id="new_affiliate_link" @submit.prevent="createNewLink">
+                    <div class="mb-3">
+                        <label class="visually-hidden required" for="affiliate_link_token">Token</label>
+                        <div class="input-group">
+                            <span class="input-group-text">{{ PROPERTY_PROS_MARKETING_URL }}?via=</span>
+                            <input v-model="newLinkToken" required autofocus placeholder="your-token"
+                                pattern="[a-zA-Z0-9\-]+" class="form-control" type="text" name="affiliate_link[token]"
+                                id="affiliate_link_token">
+
+                        </div>
+                        <small class="form-text text-muted">Letters, numbers, and dashes only, please.</small>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 mt-4">
+                        <button type="button" @click="closeModal"
+                            class="bg-gray-300 px-4 py-2 rounded text-sm hover:bg-gray-400" :disabled="loading">
+                            Cancel
+                        </button>
+
+                        <button type="submit"
+                            class="btn btn-primary px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600"
+                            :disabled="loading">
+
+                            <span v-if="loading">
+                                <div class="flex justify-center items-center">
+                                    <svg class="animate-spin h-6 w-6  mr-2" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                    </svg>
+                                    Create Link
+                                </div>
+                            </span>
+
+                            <span v-else>Create Link</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
+
 </template>
-<!-- Mac: sudo killall -HUP mDNSResponder -->

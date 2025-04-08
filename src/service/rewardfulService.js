@@ -3,10 +3,10 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 
 export const rewardfulService = {
-    updateAffiliate: async (affiliateId,payload) => {
+    updateAffiliate: async (affiliateId, payload) => {
         try {
             let endpoint = `${baseURL}rewardful/update-affiliate/${affiliateId}`;
-            let response = await axios.post(endpoint,payload);
+            let response = await axios.post(endpoint, payload);
             return response;
         } catch (error) {
             console.error('Error fetching FirstPromoter data:', error);
@@ -39,13 +39,13 @@ export const rewardfulService = {
             const params = new URLSearchParams();
             if (affiliate_id) {
                 params.append("affiliate_id", affiliate_id);
-            }else {
+            } else {
                 params.append("commissionId", commissionId);
             }
             if (params.toString()) {
                 endpoint += `?${params.toString()}`;
             }
-    
+
             let response = await axios.get(endpoint);
             return response;
         } catch (error) {
@@ -59,11 +59,11 @@ export const rewardfulService = {
             const params = new URLSearchParams();
             // if (conversion_state) params.append("conversion_state", conversion_state);
             if (affiliate_id) params.append("affiliate_id", affiliate_id);
-    
+
             if (params.toString()) {
                 endpoint += `?${params.toString()}`;
             }
-    
+
             let response = await axios.get(endpoint);
             return response;
         } catch (error) {
@@ -72,24 +72,37 @@ export const rewardfulService = {
         }
     },
     getPayouts: async ({ affiliate_id, payoutId }) => {
-        console.log(affiliate_id);  
+        console.log(affiliate_id);
         try {
             let endpoint = `${baseURL}rewardful/get-payouts`;
             const params = new URLSearchParams();
             if (affiliate_id) {
                 params.append("affiliate_id", affiliate_id);
-            }else {
+            } else {
                 params.append("payoutId", payoutId);
             }
             if (params.toString()) {
                 endpoint += `?${params.toString()}`;
             }
-    
+
             let response = await axios.get(endpoint);
             return response;
         } catch (error) {
             console.error("Error fetching referral data:", error);
             return null;
         }
-    }
+    },
+    createNewAffiliateLink: async (payload) => {
+        try {
+            const endpoint = `${baseURL}rewardful/create-new-affiliate-link`;
+            const response = await axios.post(endpoint, payload);
+            console.log("response/////", response)
+            return response?.data;
+        } catch (error) {
+            console.log("error", error)
+            return {
+                error: error.response?.data?.error,
+            };
+        }
+    },
 };
