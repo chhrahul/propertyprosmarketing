@@ -96,13 +96,12 @@ export const rewardfulService = {
         try {
             const endpoint = `${baseURL}rewardful/create-new-affiliate-link`;
             const response = await axios.post(endpoint, payload);
-            console.log("response/////", response)
             return response?.data;
         } catch (error) {
-            console.log("error", error)
             return {
                 error: error.response?.data?.error,
             };
         }
     },
 };
+

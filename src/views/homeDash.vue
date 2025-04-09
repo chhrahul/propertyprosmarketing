@@ -217,13 +217,13 @@ const createNewLink = async () => {
             </svg>
         </div>
 
-        <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div class="panel bg-white p-3 p-md-5 rounded-lg shadow-lg w-96">
-                <h1 class="h5 mt-0 mb-3">Create a New Link</h1>
+        <div v-if="isModalOpen"
+            class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 create_affiliate_link_modal">
+            <div class="panel bg-white p-3 p-md-5 rounded-lg shadow-lg">
+                <h5 class="mt-0 mb-3">Create a New Link</h5>
 
                 <form class="new_affiliate_link" id="new_affiliate_link" @submit.prevent="createNewLink">
                     <div class="mb-3">
-                        <label class="visually-hidden required" for="affiliate_link_token">Token</label>
                         <div class="input-group">
                             <span class="input-group-text">{{ PROPERTY_PROS_MARKETING_URL }}?via=</span>
                             <input v-model="newLinkToken" required autofocus placeholder="your-token"
@@ -231,7 +231,8 @@ const createNewLink = async () => {
                                 id="affiliate_link_token">
 
                         </div>
-                        <small class="form-text text-muted">Letters, numbers, and dashes only, please.</small>
+                        <small style="color: #3d4d5fbf; font-size: 14px;">Letters, numbers, and dashes only,
+                            please.</small>
                     </div>
 
                     <div class="flex justify-end space-x-2 mt-4">
@@ -246,13 +247,13 @@ const createNewLink = async () => {
 
                             <span v-if="loading">
                                 <div class="flex justify-center items-center">
-                                    <svg class="animate-spin h-6 w-6  mr-2" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 24 24">
+                                    <svg class="animate-spin h-5  mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24">
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                                             stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                                     </svg>
-                                    Create Link
+                                    <span>Create Link</span>
                                 </div>
                             </span>
 
