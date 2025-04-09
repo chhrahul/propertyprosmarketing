@@ -220,7 +220,7 @@ const createNewLink = async () => {
         <div v-if="isModalOpen"
             class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 create_affiliate_link_modal">
             <div class="panel bg-white p-3 p-md-5 rounded-lg shadow-lg">
-                <h5 class="mt-0 mb-3">Create a New Link</h5>
+                <h5 class="mt-0 mb-3">Create a new link</h5>
 
                 <form class="new_affiliate_link" id="new_affiliate_link" @submit.prevent="createNewLink">
                     <div class="mb-3">
