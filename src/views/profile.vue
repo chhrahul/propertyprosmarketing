@@ -157,8 +157,12 @@ const handlePasswordChange = async () => {
         };
 
         const response = await AuthService.changePassword(payload);
-        showToast(toast, "success", "Success", response.message);
-
+    
+        if(response.success){
+            showToast(toast, "success", "Success", response.message);
+        }else{
+            showToast(toast, "error", "Error",response.error);
+        }
         passwordData.value = {
             current: "",
             new: "",
