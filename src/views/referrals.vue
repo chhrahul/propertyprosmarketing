@@ -80,7 +80,7 @@
 <script setup>
 import { ref, onMounted, computed, watchEffect } from 'vue';
 import { rewardfulService } from "../service/rewardfulService";
-import { AuthService } from '@/service/authService';
+import { AuthService } from '@/service/AuthService';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth";
 

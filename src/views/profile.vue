@@ -86,7 +86,7 @@ import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth";
-import { AuthService } from '@/service/authService';
+import { AuthService } from '@/service/AuthService';
 import { rewardfulService } from "@/service/rewardfulService";
 import { useToast } from 'primevue/usetoast';
 import { showToast } from "../utils/Helper";

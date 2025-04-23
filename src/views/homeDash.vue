@@ -4,7 +4,7 @@ import { rewardfulService } from "../service/rewardfulService";
 
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth";
-import { AuthService } from '@/service/authService';
+import { AuthService } from '@/service/AuthService';
 import { PROPERTY_PROS_MARKETING_URL } from '@/utils/Enums'
 import { useToast } from 'primevue/usetoast';
 import { showToast } from '@/utils/Helper'

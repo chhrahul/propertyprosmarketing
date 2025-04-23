@@ -25,7 +25,7 @@
 
 <script>
 import { fetchDashboardData } from '@/service/firstPromoterService';
-import { AuthService } from '@/service/authService';
+import { AuthService } from '@/service/AuthService';
 
 
 export default {
