@@ -65,10 +65,10 @@ const loginHandler = async () => {
                             class="mb-4" fluid :feedback="false"></Password>
 
                         <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-                            <div class="flex items-center">
+                            <!-- <div class="flex items-center">
                                 <Checkbox v-model="rememberMe" id="rememberme1" binary class="mr-2"></Checkbox>
                                 <label for="rememberme1">Remember me</label>
-                            </div>
+                            </div> -->
                             <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary"
                                 @click="forgetpassword">Forgot password?</span>
                         </div>
