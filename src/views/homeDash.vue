@@ -28,6 +28,17 @@ const fetchAffiliateData = async () => {
         const response = await rewardfulService.getAffiliate(affiliateId);
         affiliateData.value = response.data;
         fetchCampaignData();
+        fetchMonthlyReport(affiliateId)
+    } catch (error) {
+        showToast(toast, "error", "Error", error);
+    }
+};
+
+const fetchMonthlyReport = async (id) => {  
+    try {
+        const response = await rewardfulService.getMonthlyReport(id);
+        console.log("Res...",response)
+        // campaignData.value = response.data;
     } catch (error) {
         showToast(toast, "error", "Error", error);
     }

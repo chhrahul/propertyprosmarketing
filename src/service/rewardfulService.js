@@ -103,5 +103,15 @@ export const rewardfulService = {
             };
         }
     },
+    getMonthlyReport: async (affiliateId) => {
+        try {
+            let endpoint = `${baseURL}report/affiliate/${affiliateId}/monthly-report`;
+            let response = await axios.get(endpoint);
+            return response;
+        } catch (error) {
+            console.error('Error fetching FirstPromoter data:', error);
+            return null;
+        }
+    },
 };
 
