@@ -113,6 +113,10 @@
             display: inline-flex;
         }
 
+        .layout-topbar-logo{
+            font-size: 1.2rem;
+        }
+
         .layout-topbar-menu {
             position: absolute;
             background-color: var(--surface-overlay);
