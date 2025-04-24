@@ -48,9 +48,9 @@
         transition: background-color var(--element-transition-duration);
         cursor: pointer;
 
-        &:hover {
-            background-color: var(--surface-hover);
-        }
+        // &:hover {
+        //     background-color: var(--surface-hover);
+        // }
 
         &:focus-visible {
             @include focused();
