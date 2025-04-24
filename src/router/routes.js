@@ -32,6 +32,7 @@ const routes = [
     },
     {
         path: '/dashboard',
+        name: 'dashboard',
         component: AppLayout,
         beforeEnter: (to, from, next) => {
             const isAuthenticated = localStorage.getItem('token');
