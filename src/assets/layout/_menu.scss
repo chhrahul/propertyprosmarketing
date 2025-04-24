@@ -87,9 +87,9 @@
                 color: var(--primary-color);
             }
 
-            &:hover {
-                background-color: var(--surface-hover);
-            }
+            // &:hover {
+            //     background-color: var(--surface-hover);
+            // }
 
             &:focus {
                 @include focused-inset();
