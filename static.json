@@ -1,5 +1,5 @@
 {
     "routes": {
-        "/dashboard/*": "index.html"
+      "/**": "index.html"
     }
-}
+  }
