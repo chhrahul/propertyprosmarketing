@@ -1,12 +1,14 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { AuthService } from "../../../service/AuthService.js"
 import {formValidation, showToast} from "../../../utils/Helper.js"
 
 import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/store/auth'
+
+const router = useRouter();
 
 const authStore = useAuthStore();
 const toast = useToast();
