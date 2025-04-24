@@ -63,9 +63,9 @@ const routes = [
                 component: profile
             },
             {
-                path: '/adminDash',
-                name: 'adminDash',
-                component: adminDash
+                path: '/commission',
+                name: 'Commission',
+                component: commissionNew
             },
             {
                 path: '/PayoutDetails/:id',
