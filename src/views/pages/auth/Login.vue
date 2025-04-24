@@ -39,7 +39,7 @@ const loginHandler = async () => {
         return false;
     }
     authStore.setUserLoginDetail(loginUserDetails);
-    router.push({ name: 'dashboard' });
+    router.push({ name: 'homeDash' });
 }
 
 </script>
