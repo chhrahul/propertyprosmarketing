@@ -53,14 +53,6 @@
                             </div>
                         </td>
                     </tr>
-
-                    <tr v-else-if="filteredReferrals.length === 0">
-                        <td colspan="6" class="py-4 text-center text-gray-500">
-                            <p class="text-lg">Sorry, your query returned no results.</p>
-                            <p class="text-sm text-gray-400">Try searching again with different terms.</p>
-                        </td>
-                    </tr>
-
                     <tr v-for="referral in filteredReferrals" :key="referral.id">
                         <td class="p-4 text-left">
                             <a :href="referral.link?.url" class="text-blue-500 hover:underline">{{ referral.link?.token || 'N/A' }}</a>
