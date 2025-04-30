@@ -10,6 +10,8 @@ import profile from '@/views/profile.vue';
 import adminDash from '@/views/adminDash.vue';
 import ForgetPassword from '@/views/pages/auth/ForgetPassword.vue';
 import PayoutDetails from '@/views/payoutDetails.vue';
+import OTPVerification from '@/views/pages/auth/OTPVerification.vue';
+import ResetPassword from '@/views/pages/auth/ResetPassword.vue';
 
 const routes = [
     {
@@ -26,9 +28,19 @@ const routes = [
         component: Login
     },
     {
-        path: '/auth/forgetpassword',
+        path: '/auth/forget/password',
         name: 'forgetPassword',
         component: ForgetPassword
+    },
+    {
+        path: '/auth/otp/verify',
+        name: 'otpVerification',
+        component: OTPVerification
+    },
+    {
+        path: '/auth/reset/password',
+        name: 'resetPassword',
+        component: ResetPassword
     },
     {
         path: '/dashboard',

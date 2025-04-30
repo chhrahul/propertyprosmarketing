@@ -87,9 +87,9 @@ const loginHandler = async () => {
                 <Checkbox v-model="rememberMe" id="rememberme1" binary class="mr-2"></Checkbox>
                 <label for="rememberme1">Remember me</label>
               </div> -->
-              <!-- <span class="font-medium text-sm sm:text-base text-primary cursor-pointer ml-auto" @click="forgetpassword">
+              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer ml-auto" @click="forgetpassword">
                 Forgot password?
-              </span> -->
+              </span>
             </div>
 
             <Button
