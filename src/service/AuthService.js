@@ -48,12 +48,12 @@ export const AuthService = {
     },
     forgetPassword: async (payload) => {
         try {
-            let endpoint = `${baseURL}auth/forget-password`;
+            let endpoint = `${baseURL}auth/forgot-password`;
             let response = await axios.post(endpoint, payload);
-            console.log(response, 'forget password response');
-            return {
-                message: response.data.message,
-            };
+            if (response.status === 200) {
+                return  response.data;
+            }
+            return false
         } catch (error) {
             return {
                 error: error.response?.data?.message || "Failed to send reset password link.",
@@ -64,10 +64,10 @@ export const AuthService = {
         try {
             let endpoint = `${baseURL}auth/reset-password`;
             let response = await axios.post(endpoint, payload);
-            console.log(response, 'reset password response');
-            return {
-                message: response.data.message,
-            };
+            if (response.status === 200) {
+                return  response.data;
+            }
+            return false
         } catch (error) {
             return {
                 error: error.response?.data?.message || "Failed to reset password.",
@@ -76,11 +76,12 @@ export const AuthService = {
     },
     otpVarification: async (payload) => {
         try {
-            let endpoint = `${baseURL}auth/verify-otp`;
+            let endpoint = `${baseURL}auth/validate-otp`;
             let response = await axios.post(endpoint, payload);
-            return {
-                message: response.data.message,
-            };
+            if (response.status === 200) {
+                return  response.data;
+            }
+            return false
         } catch (error) {
             return {
                 error: error.response?.data?.message || "Failed to verify OTP.",

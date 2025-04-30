@@ -29,8 +29,8 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { AuthService } from '@/service/AuthService';
 const otp = ref('');
 const isLoading = ref(false);
 const isFieldEmpty = ref(false);
@@ -39,7 +39,6 @@ const isOtpSent = ref(false);
 const router = useRouter();
 const route = useRoute();
 const token = route.query.token;
-console.log('token', token);
 const resetPassword = async () => {
     isLoading.value = true;
     if (!otp.value) {
@@ -49,7 +48,7 @@ const resetPassword = async () => {
         return;
     }
     isFieldEmpty.value = false;
-    router.push({ name: 'resetPassword', query: { token } });
+    // router.push({ name: 'resetPassword', query: { token } });
     // Call the API to reset the password with the OTP
     try {
         let payload = {
@@ -57,9 +56,8 @@ const resetPassword = async () => {
             token: token
         };
         const response = await AuthService.otpVarification(payload);
-        if (response.status === 200) {
-            showToast('success', 'Success', 'Password reset successfully');
-            router.push({ name: 'login' });
+        if(response){
+            router.push({ name: 'resetPassword', query: { token } });
         } else {
             showToast('error', 'Error', 'Failed to reset password');
         }

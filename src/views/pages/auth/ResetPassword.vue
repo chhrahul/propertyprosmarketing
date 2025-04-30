@@ -35,12 +35,18 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
 import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { AuthService } from '@/service/AuthService';
 const password = ref('');
 const confirmPassword = ref('');
 const isLoading = ref(false);
 const isFieldEmpty = ref(false);
 const error = ref();
 const isOtpSent = ref(false);
+const route = useRoute();
+const token = route.query.token;
+const router = useRouter();
+
 const resetPassword = async () => {
     isLoading.value = true;
     if(!formValidation()){
@@ -48,19 +54,22 @@ const resetPassword = async () => {
     };
     isFieldEmpty.value = false;
     // Call the API to reset the password with the OTP
-    // try {
-    //     const response = await AuthService.resetPassword(otp.value);
-    //     if (response.status === 200) {
-    //         showToast('success', 'Success', 'Password reset successfully');
-    //         router.push({ name: 'login' });
-    //     } else {
-    //         showToast('error', 'Error', 'Failed to reset password');
-    //     }
-    // } catch (error) {
-    //     showToast('error', 'Error', 'An error occurred while resetting password');
-    // } finally {
-    //     isLoading.value = false;
-    // }
+    try {
+        let payload = {
+            newPassword: password.value,
+            token: token
+        };
+        const response = await AuthService.resetPassword(payload);
+        if(response){
+            router.push({ name: 'login'});
+        } else {
+            showToast('error', 'Error', 'Failed to reset password');
+        }
+    } catch (error) {
+        showToast('error', 'Error', 'An error occurred while resetting password');
+    } finally {
+        isLoading.value = false;
+    }
 };
 
 const formValidation = () => {

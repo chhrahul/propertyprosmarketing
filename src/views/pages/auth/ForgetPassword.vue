@@ -14,6 +14,9 @@
                         <div class="flex items-center justify-start mt-2 mb-2 gap-8">
                             <span class="font-medium no-underline ml-2 text-right cursor-pointer text-red-500"
                                 v-show="isFieldEmpty">{{ error }}</span>
+
+                                <span class="font-medium no-underline ml-2 text-right cursor-pointer text-green-500"
+                                v-show="isOtpSent">{{ showMessage }}</span>
                         </div>
                         <Button type="button" label="Forget Password" @click="forgetPassword"
                             :disabled="isLoading" class="w-full flex justify-center items-center gap-2">
@@ -31,12 +34,18 @@ import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { AuthService } from '@/service/AuthService';
+import { useToast } from 'primevue/usetoast';
+import { showToast } from '@/utils/Helper'
+
 
 const email = ref('');
 const isLoading = ref(false);
 const isFieldEmpty = ref(false);
 const error = ref();
 const router = useRouter();
+const toast = useToast();
+const isOtpSent = ref(false);
+const showMessage = ref('Please check your email for the OTP');
 
 const forgetPassword = async () => {
     isLoading.value = true;
@@ -47,12 +56,16 @@ const forgetPassword = async () => {
         return;
     }
     isFieldEmpty.value = false;
-    router.push({ name: 'otpVerification', query: { token: email.value } });
     try {
-        const response = await AuthService.forgetPassword(email.value);
-        if (response.status === 200) {
-            showToast('success', 'Success', 'Please check your email for further instructions');
-            router.push({ name: 'login' });
+        const response = await AuthService.forgetPassword({email: email.value});
+        console.log('response', response);
+        
+        if (response) {
+            //showToast(toast, "success", "Success", response.message);
+            isOtpSent.value = true;
+            setTimeout(() => {
+                router.push({ name: 'otpVerification', query: { token: response.token } });
+            }, 2000);
         } else {
             showToast('error', 'Error', response.data.message);
         }
@@ -62,7 +75,7 @@ const forgetPassword = async () => {
     } finally {
         isLoading.value = false;
     }
-    
+
 };
 
 </script>
