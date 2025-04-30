@@ -56,7 +56,7 @@
 
                     <tr v-else-if="filteredReferrals.length === 0">
                         <td colspan="6" class="py-4 text-center text-gray-500">
-                            <p class="text-lg">Sorry, your query returned no results.</p>
+                            <p class="text-lg">No result found.</p>
                         </td>
                     </tr>
 
