@@ -18,6 +18,10 @@
                             Password</label>
                         <InputText id="confirmPassword" type="text" placeholder="Enter Confirm Password"
                             class="w-full md:w-[30rem] mb-2" v-model="confirmPassword" />
+                        <div class="flex items-center justify-start mt-2 mb-2 gap-8">
+                            <span class="font-medium no-underline ml-2 text-right cursor-pointer text-red-500"
+                                v-show="isFieldEmpty">{{ error }}</span>
+                        </div>
                         <Button type="button" label="Reset Password" @click="resetPassword" 
                             class="w-full flex justify-center items-center gap-2">
                             <!-- <i v-if="isLoading" class="pi pi-spinner pi-spin"></i> -->
@@ -43,6 +47,10 @@ const isOtpSent = ref(false);
 const route = useRoute();
 const token = route.query.token;
 const router = useRouter();
+import { useToast } from 'primevue/usetoast';
+import { showToast } from '@/utils/Helper';
+
+const toast = useToast();
 
 const resetPassword = async () => {
     isLoading.value = true;
