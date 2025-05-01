@@ -79,6 +79,7 @@ const resetPassword = async () => {
 };
 
 const formValidation = () => {
+    password.value = password.value.trim();
     if (password.value === '') {
         isFieldEmpty.value = true;
         showToast(toast, "error", "Error", 'Please enter your password');
