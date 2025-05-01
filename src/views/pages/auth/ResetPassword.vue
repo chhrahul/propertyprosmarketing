@@ -82,24 +82,25 @@ const formValidation = () => {
     password.value = password.value.trim();
     if (password.value === '') {
         isFieldEmpty.value = true;
-        showToast(toast, "error", "Error", 'Please enter your password');
+        showToast(toast, "error", "Error", "Please enter your password");
         return false;
     }
+
+    confirmPassword.value = confirmPassword.value.trim();
     if (confirmPassword.value === '') {
         isFieldEmpty.value = true;
-        showToast(toast, "error", "Error", 'Please enter your confirm password');
+        showToast(toast, "error", "Error", "Please confirm your password");
+        return false;
+    }
 
-        return false;
-    }
     if (password.value !== confirmPassword.value) {
-        isFieldEmpty.value = true;
-        showToast(toast, "error", "Error", 'Confirm passwords does not match');
+        showToast(toast, "error", "Error", "Passwords do not match");
         return false;
     }
+
     isFieldEmpty.value = false;
     return true;
 };
-
 
 
 </script>
