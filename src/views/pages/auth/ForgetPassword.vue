@@ -7,14 +7,12 @@
                 style="border-radius: 56px; padding: 0.3rem; width: 100%; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
                 <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
                     <div>
+                        <Toast />
                         <label for="email1"
                             class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
                         <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-2"
                             v-model="email" />
                         <div class="flex items-center justify-start mt-2 mb-2 gap-8">
-                            <span class="font-medium no-underline ml-2 text-right cursor-pointer text-red-500"
-                                v-show="isFieldEmpty">{{ error }}</span>
-
                                 <span class="font-medium no-underline ml-2 text-right cursor-pointer text-green-500"
                                 v-show="isOtpSent">{{ showMessage }}</span>
                         </div>
@@ -52,26 +50,23 @@ const forgetPassword = async () => {
     if (!email.value) {
         isLoading.value = false;
         isFieldEmpty.value = true;
-        error.value = 'Please enter your email address';
+        showToast(toast,'error', 'Error', 'Please enter your email address');
         return;
     }
-    isFieldEmpty.value = false;
     try {
         const response = await AuthService.forgetPassword({email: email.value});
-        console.log('response', response);
-        
-        if (response) {
+        if (!response.error) {
             //showToast(toast, "success", "Success", response.message);
-            isOtpSent.value = true;
             setTimeout(() => {
                 router.push({ name: 'otpVerification', query: { token: response.token } });
             }, 2000);
         } else {
-            showToast('error', 'Error', response.data.message);
+            showToast(toast,'error', 'Error', response.error);
         }
     } catch (error) {
         console.error(error);
-        showToast('error', 'Error', error.response.data.message);
+        showToast(toast,'error', 'Error', error.response.data.message);
+
     } finally {
         isLoading.value = false;
     }

@@ -14,7 +14,6 @@
                                 class="otp-input" v-model="otpArray[index]" @input="handleInput(index)"
                                 @keydown="handleKeydown($event, index)" @paste="handlePaste($event)" ref="otpInputs" />
                         </div>
-                        <span v-if="isFieldEmpty" class="text-red-500 mb-4">{{ error }}</span>
                         <Button type="button" label="Reset Password" @click="submitOtp" :disabled="isLoading"
                             class="w-full flex justify-center items-center gap-2">
                             <i v-if="isLoading" class="pi pi-spinner pi-spin"></i>
@@ -81,7 +80,8 @@ const submitOtp = async () => {
     const otp = otpArray.value.join('');
     if (otp.length !== 6) {
         isFieldEmpty.value = true;
-        error.value = 'Please enter a valid 6-digit OTP';
+        showToast(toast, "error", "Error", 'Please enter a valid 6-digit OTP');
+
         return;
     }
 

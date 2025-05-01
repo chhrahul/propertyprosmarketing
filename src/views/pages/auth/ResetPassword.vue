@@ -7,6 +7,7 @@
                 style="border-radius: 56px; padding: 0.3rem; width: 100%; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
                 <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
                     <div>
+                        <Toast />
                         <label for="password"
                             class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Password</label>
                         <InputText id="password" type="text" placeholder="Enter Password"
@@ -17,10 +18,6 @@
                             Password</label>
                         <InputText id="confirmPassword" type="text" placeholder="Enter Confirm Password"
                             class="w-full md:w-[30rem] mb-2" v-model="confirmPassword" />
-                        <div class="flex items-center justify-start mt-2 mb-2 gap-8">
-                            <span class="font-medium no-underline ml-2 text-right cursor-pointer text-red-500"
-                                v-show="isFieldEmpty">{{ error }}</span>
-                        </div>
                         <Button type="button" label="Reset Password" @click="resetPassword" 
                             class="w-full flex justify-center items-center gap-2">
                             <!-- <i v-if="isLoading" class="pi pi-spinner pi-spin"></i> -->
@@ -60,13 +57,14 @@ const resetPassword = async () => {
             token: token
         };
         const response = await AuthService.resetPassword(payload);
-        if(response){
+        console.log(response)
+        if(!response.error){
             router.push({ name: 'login'});
         } else {
-            showToast('error', 'Error', 'Failed to reset password');
+            showToast(toast, "error", "Error", response.error);
         }
     } catch (error) {
-        showToast('error', 'Error', 'An error occurred while resetting password');
+        showToast(toast, "error", 'Error', 'An error occurred while resetting password');
     } finally {
         isLoading.value = false;
     }
@@ -75,17 +73,18 @@ const resetPassword = async () => {
 const formValidation = () => {
     if (password.value === '') {
         isFieldEmpty.value = true;
-        error.value = 'Please enter your password';
+        showToast(toast, "error", "Error", 'Please enter your password');
         return false;
     }
     if (confirmPassword.value === '') {
         isFieldEmpty.value = true;
-        error.value = 'Please enter your confirm password';
+        showToast(toast, "error", "Error", 'Please enter your confirm password');
+
         return false;
     }
     if (password.value !== confirmPassword.value) {
         isFieldEmpty.value = true;
-        error.value = 'Confirm passwords does not match';
+        showToast(toast, "error", "Error", 'Confirm passwords does not match');
         return false;
     }
     isFieldEmpty.value = false;
