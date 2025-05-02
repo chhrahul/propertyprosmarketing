@@ -56,7 +56,7 @@ const forgetPassword = async () => {
     try {
         const response = await AuthService.forgetPassword({email: email.value});
         if (!response.error) {
-            //showToast(toast, "success", "Success", response.message);
+            showToast(toast, "success", "Success", showMessage);
             setTimeout(() => {
                 router.push({ name: 'otpVerification', query: { token: response.token } });
             }, 2000);

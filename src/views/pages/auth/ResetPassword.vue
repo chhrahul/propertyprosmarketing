@@ -67,7 +67,10 @@ const resetPassword = async () => {
         const response = await AuthService.resetPassword(payload);
         console.log(response)
         if(!response.error){
-            router.push({ name: 'login'});
+            showToast(toast, "success", "Success", response.message);
+            setTimeout(() => {
+                router.push({ name: 'login'});
+            }, 2000);
         } else {
             showToast(toast, "error", "Error", response.error);
         }
