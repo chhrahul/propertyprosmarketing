@@ -24,6 +24,7 @@ export const AuthService = {
             let response = await axios.post(endpoint, payload);
             return {
                 message: response.data.message,
+                success: response.data.success,
             };
         } catch (error) {
             return {
