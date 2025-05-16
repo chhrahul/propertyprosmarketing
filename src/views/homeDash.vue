@@ -18,6 +18,7 @@ const campaignData = ref(null);
 const isModalOpen = ref(false);
 const newLinkToken = ref('');
 const loading = ref(false);
+const newLinkLabel = ref('');
 
 const fetchAffiliateData = async () => {
     let userId = getUser.value?.user?.id;
@@ -104,7 +105,17 @@ const createNewLink = async () => {
             return;
         }
         loading.value = true;
-        const response = await rewardfulService.createNewAffiliateLink({ affiliate_id: affiliateId, token: newLinkToken.value.trim() });
+
+        const payload = {
+            affiliate_id: affiliateId,
+            token: newLinkToken.value.trim()
+        };
+
+        if (newLinkLabel.value.trim()) {
+            payload.label = newLinkLabel.value.trim();
+        }
+
+        const response = await rewardfulService.createNewAffiliateLink(payload);
 
         if (response?.error) {
             showToast(toast, "error", "Error", response?.error);
@@ -121,81 +132,150 @@ const createNewLink = async () => {
     }
 }
 
+const formattedCommissionStats = computed(() => {
+    const stats = affiliateData.value?.commission_stats?.currencies?.USD;
+
+    const formatCents = (cents) => `$${(cents / 100).toFixed(2)}`;
+
+    return {
+        unpaid: stats ? formatCents(stats.unpaid?.cents || 0) : "$0.00",
+        paid: stats ? formatCents(stats.paid?.cents || 0) : "$0.00",
+        total: stats ? formatCents(stats.total?.cents || 0) : "$0.00",
+        grossRevenue: stats ? formatCents(stats.gross_revenue?.cents || 0) : "$0.00",
+        netRevenue: stats ? formatCents(stats.net_revenue?.cents || 0) : "$0.00"
+    };
+});
+
 </script>
 
 <template>
     <div class="bg-white p-6 shadow-lg rounded-lg">
         <div v-if="affiliateData">
-            <div class="flex items-center justify-between mb-6 border-b pb-4">
-                <h2 class="text-xl font-semibold">Dashboard</h2>
-            </div>
-
             <div class="mb-6">
-                <h5 class="text-lg font-medium mb-3">Referrals</h5>
-                <table class="w-full border text-center">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="p-3">Visitors</th>
-                            <th class="p-3">Leads</th>
-                            <th class="p-3">Conversions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-t">
-                            <td class="p-3">{{ affiliateData.visitors }}</td>
-                            <td class="p-3">{{ affiliateData.leads }}</td>
-                            <td class="p-3">{{ affiliateData.conversions }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="mb-6">
+                    <h5 class="text-lg font-medium mb-4">Referrals Overview</h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                        <!-- Total Visitors -->
+                        <div class="bg-blue-50 p-4 rounded-lg shadow-sm flex items-center space-x-4">
+                            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path d="M17 20h5v-2a4 4 0 00-3-3.87" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M9 20H4v-2a4 4 0 013-3.87" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="9" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="17" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div>
+                                <p class="text-sm text-gray-600">Total Visitors</p>
+                                <p class="text-xl font-semibold">{{ affiliateData.visitors }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Total Leads -->
+                        <div class="bg-green-50 p-4 rounded-lg shadow-sm flex items-center space-x-4">
+                            <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path d="M3 10h11M9 21V3m0 0l3 3m-3-3L6 6" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <div>
+                                <p class="text-sm text-gray-600">Total Leads</p>
+                                <p class="text-xl font-semibold">{{ affiliateData.leads }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Total Conversions -->
+                        <div class="bg-yellow-50 p-4 rounded-lg shadow-sm flex items-center space-x-4">
+                            <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div>
+                                <p class="text-sm text-gray-600">Total Conversions</p>
+                                <p class="text-xl font-semibold">{{ affiliateData.conversions }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Commission Pending -->
+                        <div class="bg-red-50 p-4 rounded-lg shadow-sm flex items-center space-x-4">
+                            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path d="M12 8v4l3 3" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div>
+                                <p class="text-sm text-gray-600">Commission Pending</p>
+                                <p class="text-xl font-semibold">{{ formattedCommissionStats.unpaid }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Commission Paid -->
+                        <div class="bg-purple-50 p-4 rounded-lg shadow-sm flex items-center space-x-4">
+                            <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path d="M12 8v4l3 3" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <div>
+                                <p class="text-sm text-gray-600">Commission Paid</p>
+                                <p class="text-xl font-semibold">{{ formattedCommissionStats.paid }}</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
             </div>
 
             <div class="flex flex-wrap justify-between items-center mb-4">
                 <h5 class="text-lg font-medium w-full sm:w-auto mb-2 sm:mb-0">Links</h5>
                 <div class="text-sm text-gray-600 w-full sm:w-auto text-center sm:text-right">
-                    <strong>{{ campaignData?.name }}</strong>
-                    <span class="mx-2 hidden sm:inline">•</span>
-                    <br class="sm:hidden" />
-                    {{ commissionMessage }}
-                    <span class="mx-2 hidden sm:inline">•</span>
-                    <br class="sm:hidden" />
-                    Joined {{ new Date(affiliateData.created_at).toLocaleDateString() }}
+                    <strong>Earn 10% Recurring/month for any client that comes from your affiliate link and works with
+                        us.</strong>
                 </div>
             </div>
 
             <div class="mb-6 overflow-x-auto">
-                <table class="w-full border text-center">
-                    <thead class="bg-gray-100">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead class="bg-gray-100 text-xs uppercase text-gray-600">
                         <tr>
-                            <th class="p-3">Link</th>
-                            <th class="p-3">Actions</th>
-                            <th class="p-3">Visitors</th>
-                            <th class="p-3">Leads</th>
-                            <th class="p-3">Conversions</th>
+                            <th class="px-4 py-3">Label</th>
+                            <th class="px-4 py-3">URL</th>
+                            <th class="px-4 py-3 text-center">Visitors</th>
+                            <th class="px-4 py-3 text-center">Leads</th>
+                            <th class="px-4 py-3 text-center">Conversions</th>
+                            <th class="px-4 py-3 text-center">Copy</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-t" v-for="link in affiliateData.links" :key="link.id">
-                            <td class="p-3 text-left">
-                                <a class="text-blue-500"
+                        <tr v-for="(link, index) in affiliateData.links" :key="link.id"
+                            :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                            <td class="px-4 py-2">
+                                {{ link.label || '—' }}
+                                <p class="text-xs text-gray-400 italic" v-if="!link.label">No label set</p>
+                            </td>
+                            <td class="px-4 py-2">
+                                <a class="text-blue-500 break-all"
                                     :href="PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token"
                                     target="_blank">
                                     {{ PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token }}
                                 </a>
-                                <p class="text-sm text-gray-600">👉 Add <code>?via={{ link.token }}</code> to any URL.
-                                </p>
                             </td>
-                            <td class="p-3">
+                            <td class="px-4 py-2 text-center">{{ link.visitors }}</td>
+                            <td class="px-4 py-2 text-center">{{ link.leads }}</td>
+                            <td class="px-4 py-2 text-center">{{ link.conversions }}</td>
+                            <td class="px-4 py-2 text-center">
                                 <button
                                     @click="copyToClipboard(PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token)"
-                                    class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Copy</button>
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
+                                    Copy
+                                </button>
                             </td>
-                            <td class="p-3">{{ link.visitors }}</td>
-                            <td class="p-3">{{ link.leads }}</td>
-                            <td class="p-3">{{ link.conversions }}</td>
                         </tr>
                     </tbody>
                 </table>
+
                 <div class="mb-4 text-right">
                     <button @click="openModal"
                         class="bg-green-500 text-white px-4 py-2 my-2 rounded text-sm hover:bg-green-600">
@@ -234,6 +314,14 @@ const createNewLink = async () => {
                         <small style="color: #3d4d5fbf; font-size: 14px;">Letters, numbers, and dashes only,
                             please.</small>
                     </div>
+
+                    <!-- Optional Label Field -->
+                    <div class="mb-3">
+                        <label class="block mb-1 text-sm font-medium text-gray-700">Optional Label</label>
+                        <input v-model="newLinkLabel" placeholder="e.g. Instagram Bio Link"
+                            class="w-full border rounded px-3 py-2 text-sm" type="text" />
+                    </div>
+
 
                     <div class="flex justify-end space-x-2 mt-4">
                         <button type="button" @click="closeModal"

@@ -54,13 +54,19 @@ const loginHandler = async () => {
 </script>
 
 <template>
-  <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen w-full overflow-hidden px-4">
+    <div class="section-gradient">
+      <img src="../../../assets/Images/logo.webp" alt="logo" class="w-[150px]"/>
+    </div>
+  <div
+    class="bg-surface-50 dark:bg-surface-950 flex flex-col items-center justify-center min-h-screen w-full overflow-hidden">  
     <div class="w-full max-w-3xl">
-      <div
-        class="rounded-[56px] p-[0.3rem] w-full"
-        style="background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)"
-      >
+      <div class="rounded-[56px] p-[0.3rem] w-full"
+        style="background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
         <div class="bg-surface-0 dark:bg-surface-900 rounded-[53px] py-12 px-6 sm:px-12 md:px-20">
+          <div class="text-center mb-8">
+            <h1 class="text-muted-color font-medium text-2xl sm:text-3xl">Welcome Back! Please log in to access your
+              affiliate portal.</h1>
+          </div>
           <div class="text-center mb-8">
             <h1 class="text-muted-color font-medium text-2xl sm:text-3xl">Sign In</h1>
           </div>
@@ -68,40 +74,33 @@ const loginHandler = async () => {
           <Toast />
 
           <div>
-            <label for="email1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Email</label>
+            <label for="email1"
+              class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Email</label>
             <InputText id="email1" v-model="email" type="text" placeholder="Email address" class="w-full mb-6" />
 
-            <label for="password1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Password</label>
-            <Password
-              id="password1"
-              v-model="password"
-              placeholder="Password"
-              :toggleMask="true"
-              class="w-full mb-4"
-              fluid
-              :feedback="false"
-            />
+            <label for="password1"
+              class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Password</label>
+            <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-4"
+              fluid :feedback="false" />
 
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 mb-6 gap-2">
               <!-- <div class="flex items-center">
                 <Checkbox v-model="rememberMe" id="rememberme1" binary class="mr-2"></Checkbox>
                 <label for="rememberme1">Remember me</label>
               </div> -->
-              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer ml-auto" @click="forgetpassword">
+              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer ml-auto"
+                @click="forgetpassword">
                 Forgot password?
               </span>
             </div>
 
-            <Button
-              type="button"
-              :label="isLoading ? 'Signing In...' : 'Sign In'"
-              @click="loginHandler"
-              :disabled="isLoading"
-              class="w-full flex justify-center items-center gap-2"
-            >
+            <Button type="button" :label="isLoading ? 'Signing In...' : 'Sign In'" @click="loginHandler"
+              :disabled="isLoading" class="w-full flex justify-center items-center gap-2">
               <i v-if="isLoading" class="pi pi-spinner pi-spin"></i>
             </Button>
           </div>
+
+          <div class="text-center">Property Pros Marketing | Affiliate Access</div>
         </div>
       </div>
     </div>
@@ -113,5 +112,10 @@ const loginHandler = async () => {
 .pi-eye-slash {
   transform: scale(1.6);
   margin-right: 1rem;
+}
+
+.section-gradient {
+  width: 100%;
+  background: linear-gradient(180deg, #395E70, #17242D);
 }
 </style>

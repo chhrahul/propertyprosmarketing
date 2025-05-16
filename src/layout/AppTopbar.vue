@@ -10,9 +10,10 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
             <button class="layout-menu-button layout-topbar-action" @click="toggleMenu">
                 <i class="pi pi-bars"></i>
             </button>
-            <router-link to="/" class="layout-topbar-logo">
+            <!-- <router-link to="/" class="layout-topbar-logo">
                 <span>Affiliate Customer Portal</span>
-            </router-link>
+            </router-link> -->
+            <div class="w-[100px]"><img src="../assets/Images/logo.webp" alt="Logo" class="layout-topbar-logo" /></div>
         </div>
 
         <div class="layout-topbar-actions">
@@ -29,11 +30,11 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 <style scoped>
 .active-link {
     background-color: #10b981;
-    border-radius: 50px; /* Optional: for better UI */
+    border-radius: 50px;
+    /* Optional: for better UI */
 }
 
-.active-link button i{
+.active-link button i {
     color: #ffffff;
 }
-
 </style>
