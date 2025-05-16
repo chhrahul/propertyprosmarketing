@@ -1,13 +1,16 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
 import { AuthService } from "../../../service/AuthService.js";
 import { formValidation, showToast } from "../../../utils/Helper.js";
 import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/store/auth';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
 const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
 const toast = useToast();
 
@@ -15,6 +18,14 @@ const email = ref('');
 const password = ref('');
 const rememberMe = ref(false);
 const isLoading = ref(false); // 🔄 loader flag
+
+onMounted(() => {
+  const error = route.query.error;
+  if (error) {
+    showToast(toast, "error", "Error", decodeURIComponent(error));
+    router.replace({ query: {} }); 
+  }
+});
 
 const forgetpassword = () => {
   router.push({ name: 'forgetPassword' });
@@ -51,7 +62,12 @@ const loginHandler = async () => {
     isLoading.value = false;
   }
 };
+
+const googleSignIn = () => {
+  window.location.href = `${baseURL}auth/google`;
+};
 </script>
+
 
 <template>
     <div class="section-gradient">
@@ -98,6 +114,13 @@ const loginHandler = async () => {
               :disabled="isLoading" class="w-full flex justify-center items-center gap-2">
               <i v-if="isLoading" class="pi pi-spinner pi-spin"></i>
             </Button>
+
+            <Button
+              label="Sign in with Google"
+              icon="pi pi-google"
+              class="w-full mt-4 bg-white text-black border border-gray-300 hover:bg-gray-100"
+              @click="googleSignIn"></Button>
+            
           </div>
 
           <div class="text-center">Property Pros Marketing | Affiliate Access</div>
