@@ -1,6 +1,7 @@
 import AppLayout from '@/layout/AppLayout.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import Login from '@/views/pages/auth/Login.vue';
+import GoogleAuth from '@/views/pages/auth/GoogleAuth.vue';
 import homeDash from '@/views/homeDash.vue';
 import commission from '@/views/commission.vue';
 import commissionNew from '@/views/commissionNew.vue';
@@ -41,6 +42,11 @@ const routes = [
         path: '/auth/reset/password',
         name: 'resetPassword',
         component: ResetPassword
+    },
+    {
+        path: '/google-auth',
+        name: 'googleAuth',
+        component: GoogleAuth
     },
     {
         path: '/dashboard',
