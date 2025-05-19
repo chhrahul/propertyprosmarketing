@@ -8,6 +8,7 @@ import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/store/auth';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
+const registerPageUrl = import.meta.env.VITE_REGISTER_PAGE_URL;
 
 const router = useRouter();
 const route = useRoute();
@@ -66,28 +67,48 @@ const loginHandler = async () => {
 const googleSignIn = () => {
   window.location.href = `${baseURL}auth/google`;
 };
+const registerPage = () => {
+  window.open(registerPageUrl, '_blank');
+};
 </script>
 
 
 <template>
-  <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen w-full overflow-hidden px-4">
+  <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen px-4">
     <div class="w-full max-w-3xl">
+      <!-- Gradient Border Wrapper -->
       <div
-        class="rounded-[56px] p-[0.3rem] w-full"
-        style="background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)"
+        class="rounded-[3.5rem] p-[0.3rem] bg-gradient-to-b from-primary to-transparent"
       >
-        <div class="bg-surface-0 dark:bg-surface-900 rounded-[53px] py-12 px-6 sm:px-12 md:px-20">
-          <div class="text-center mb-8">
-            <h1 class="text-muted-color font-medium text-2xl sm:text-3xl">Sign In</h1>
+        <!-- Inner Card -->
+        <div class="bg-surface-0 dark:bg-surface-900 rounded-[3.3rem] py-12 px-6 sm:px-12 md:px-20">
+          
+          <!-- Title -->
+          <div class="text-center mb-10">
+            <h1 class="text-muted-color font-semibold text-3xl sm:text-4xl">Sign In</h1>
           </div>
 
+          <!-- Toast -->
           <Toast />
 
+          <!-- Form -->
           <div>
-            <label for="email1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Email</label>
-            <InputText id="email1" v-model="email" type="text" placeholder="Email address" class="w-full mb-6" />
+            <!-- Email -->
+            <label for="email1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">
+              Email
+            </label>
+            <InputText
+              id="email1"
+              v-model="email"
+              type="text"
+              placeholder="Email address"
+              class="w-full mb-6"
+            />
 
-            <label for="password1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Password</label>
+            <!-- Password -->
+            <label for="password1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">
+              Password
+            </label>
             <Password
               id="password1"
               v-model="password"
@@ -98,16 +119,14 @@ const googleSignIn = () => {
               :feedback="false"
             />
 
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 mb-6 gap-2">
-              <!-- <div class="flex items-center">
-                <Checkbox v-model="rememberMe" id="rememberme1" binary class="mr-2"></Checkbox>
-                <label for="rememberme1">Remember me</label>
-              </div> -->
-              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer ml-auto" @click="forgetpassword">
+            <!-- Forgot Password -->
+            <div class="flex justify-end mt-2 mb-6">
+              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer" @click="forgetpassword">
                 Forgot password?
               </span>
             </div>
 
+            <!-- Sign In Button -->
             <Button
               type="button"
               :label="isLoading ? 'Signing In...' : 'Sign In'"
@@ -118,13 +137,22 @@ const googleSignIn = () => {
               <i v-if="isLoading" class="pi pi-spinner pi-spin"></i>
             </Button>
 
+            <!-- Google Sign-In -->
             <Button
               label="Sign in with Google"
               icon="pi pi-google"
               class="w-full mt-4 bg-white text-black border border-gray-300 hover:bg-gray-100"
-              @click="googleSignIn"></Button>
-            
+              @click="googleSignIn"
+            />
+
+            <!-- Register CTA -->
+            <div class="text-center mt-8">
+              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer" @click="registerPage">
+                Don’t have an account? Create your account now!
+              </span>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
