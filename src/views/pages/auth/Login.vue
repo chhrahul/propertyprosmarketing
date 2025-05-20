@@ -8,6 +8,7 @@ import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from '@/store/auth';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
+const registerPageUrl = import.meta.env.VITE_REGISTER_PAGE_URL;
 
 const router = useRouter();
 const route = useRoute();
@@ -66,6 +67,9 @@ const loginHandler = async () => {
 const googleSignIn = () => {
   window.location.href = `${baseURL}auth/google`;
 };
+const registerPage = () => {
+  window.open(registerPageUrl, '_blank');
+};
 </script>
 
 
@@ -87,40 +91,69 @@ const googleSignIn = () => {
             <h1 class="text-muted-color font-medium text-2xl sm:text-3xl">Sign In</h1>
           </div>
 
+          <!-- Toast -->
           <Toast />
 
+          <!-- Form -->
           <div>
-            <label for="email1"
-              class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Email</label>
-            <InputText id="email1" v-model="email" type="text" placeholder="Email address" class="w-full mb-6" />
+            <!-- Email -->
+            <label for="email1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">
+              Email
+            </label>
+            <InputText
+              id="email1"
+              v-model="email"
+              type="text"
+              placeholder="Email address"
+              class="w-full mb-6"
+            />
 
-            <label for="password1"
-              class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">Password</label>
-            <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-4"
-              fluid :feedback="false" />
+            <!-- Password -->
+            <label for="password1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">
+              Password
+            </label>
+            <Password
+              id="password1"
+              v-model="password"
+              placeholder="Password"
+              :toggleMask="true"
+              class="w-full mb-4"
+              fluid
+              :feedback="false"
+            />
 
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 mb-6 gap-2">
-              <!-- <div class="flex items-center">
-                <Checkbox v-model="rememberMe" id="rememberme1" binary class="mr-2"></Checkbox>
-                <label for="rememberme1">Remember me</label>
-              </div> -->
-              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer ml-auto"
-                @click="forgetpassword">
+            <!-- Forgot Password -->
+            <div class="flex justify-end mt-2 mb-6">
+              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer" @click="forgetpassword">
                 Forgot password?
               </span>
             </div>
 
-            <Button type="button" :label="isLoading ? 'Signing In...' : 'Sign In'" @click="loginHandler"
-              :disabled="isLoading" class="w-full flex justify-center items-center gap-2">
+            <!-- Sign In Button -->
+            <Button
+              type="button"
+              :label="isLoading ? 'Signing In...' : 'Sign In'"
+              @click="loginHandler"
+              :disabled="isLoading"
+              class="w-full flex justify-center items-center gap-2"
+            >
               <i v-if="isLoading" class="pi pi-spinner pi-spin"></i>
             </Button>
 
+            <!-- Google Sign-In -->
             <Button
               label="Sign in with Google"
               icon="pi pi-google"
               class="w-full mt-4 bg-white text-black border border-gray-300 hover:bg-gray-100"
-              @click="googleSignIn"></Button>
-            
+              @click="googleSignIn"
+            />
+
+            <!-- Register CTA -->
+            <div class="text-center mt-8">
+              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer" @click="registerPage">
+                Don’t have an account? Create your account now!
+              </span>
+            </div>
           </div>
 
           <div class="text-center">Property Pros Marketing | Affiliate Access</div>
