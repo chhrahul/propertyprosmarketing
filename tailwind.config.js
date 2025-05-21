@@ -10,6 +10,11 @@ module.exports = {
             lg: '992px',
             xl: '1200px',
             '2xl': '1920px'
-        }
+        },
+        extend: {
+            fontFamily: {
+              sans: ['Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+            },
+          },
     }
 };

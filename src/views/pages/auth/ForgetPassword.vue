@@ -1,25 +1,40 @@
 <template>
-    <FloatingConfigurator />
-    <div
-        class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
-        <div class="flex flex-col items-center justify-center">
-            <div
-                style="border-radius: 56px; padding: 0.3rem; width: 100%; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
-                <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
-                    <div>
-                        <Toast />
-                        <label for="email1"
-                            class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                        <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-2"
-                            v-model="email" />
-                        <div class="flex items-center justify-start mt-2 mb-2 gap-8">
-                                <span class="font-medium no-underline ml-2 text-right cursor-pointer text-green-500"
-                                v-show="isOtpSent">{{ showMessage }}</span>
-                        </div>
-                        <Button type="button" label="Forget Password" @click="forgetPassword"
-                            :disabled="isLoading" class="w-full flex justify-center items-center gap-2">
-                            <i v-if="isLoading" class="pi pi-spinner pi-spin"></i>
-                        </Button>
+    <div class="flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-gradient">
+        <div class="flex justify-center w-full mb-8">
+            <img src="../../../assets/Images/logo.webp" alt="logo" class="w-[170px]" />
+        </div>
+
+        <div class="w-full max-w-3xl">
+            <div class="rounded-[56px] p-[0.3rem] w-full">
+                <div class="bg-surface-0 dark:bg-surface-900 rounded-xl py-12 px-6 sm:px-12 md:px-20 shadow-md">
+                    <div class="text-center mb-3">
+                        <h2 class="font-medium text-2xl sm:text-2xl text-theme-color">Forgot Password</h2>
+                        <h1 class="font-medium text-1xl sm:text-1xl text-theme-color">
+                            Enter your registered email to receive a password reset link.
+                        </h1>
+                    </div>
+                    <Toast />
+                    <label for="email1"
+                        class="block text-surface-900 dark:text-surface-0 text-base sm:text-medium font-medium mb-2 text-theme-color">
+                        Email
+                    </label>
+                    <InputText id="email1" type="text" placeholder="Email" class="w-full mb-4 field" v-model="email" />
+                    <div class="text-left mb-4" v-show="isOtpSent">
+                        <span class="text-green-500 font-medium">{{ showMessage }}</span>
+                    </div>
+                    <Button type="button" :disabled="isLoading" @click="forgetPassword"
+                        class="w-full flex justify-center items-center gap-2 text-white brand-button font-medium relative">
+                        <i v-if="isLoading" class="pi pi-spinner pi-spin text-white"></i>
+                        <span class="ml-2">
+                            Send OTP
+                        </span>
+                    </Button>
+                    <div class="text-center mt-6">
+                        <span @click="router.push({ name: 'login' })"
+                            class="text-sm text-theme-color font-medium cursor-pointer  flex items-center justify-center gap-1">
+                            <i class="pi pi-arrow-left text-sm"></i>
+                            <span class="hover-underline">Back to Login</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -28,18 +43,14 @@
 </template>
 
 <script setup>
-import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
-import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-import { AuthService } from '@/service/AuthService';
+import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { showToast } from '@/utils/Helper'
-
+import { AuthService } from '@/service/AuthService';
 
 const email = ref('');
 const isLoading = ref(false);
-const isFieldEmpty = ref(false);
-const error = ref();
 const router = useRouter();
 const toast = useToast();
 const isOtpSent = ref(false);
@@ -49,40 +60,35 @@ const forgetPassword = async () => {
     isLoading.value = true;
     if (!email.value) {
         isLoading.value = false;
-        isFieldEmpty.value = true;
-        showToast(toast,'error', 'Error', 'Please enter your email address');
+        showToast(toast, 'error', 'Error', 'Please enter your email address');
         return;
     }
     try {
-        const response = await AuthService.forgetPassword({email: email.value});
+        const response = await AuthService.forgetPassword({ email: email.value });
         if (!response.error) {
             showToast(toast, "success", "Success", showMessage);
             setTimeout(() => {
                 router.push({ name: 'otpVerification', query: { token: response.token } });
             }, 2000);
         } else {
-            showToast(toast,'error', 'Error', response.error);
+            showToast(toast, 'error', 'Error', response.error);
         }
     } catch (error) {
-        console.error(error);
-        showToast(toast,'error', 'Error', error.response.data.message);
+        showToast(toast, 'error', 'Error', error.response.data.message);
 
     } finally {
         isLoading.value = false;
     }
-
 };
 
 </script>
 
 <style scoped>
-.pi-eye {
-    transform: scale(1.6);
-    margin-right: 1rem;
+.hover-underline:hover {
+    text-decoration: underline;
 }
 
-.pi-eye-slash {
-    transform: scale(1.6);
-    margin-right: 1rem;
+.field:focus {
+    border-color: #cbd5e1 !important;
 }
 </style>

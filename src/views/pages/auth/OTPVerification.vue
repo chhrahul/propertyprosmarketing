@@ -1,24 +1,30 @@
 <template>
-    <div
-        class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
-        <div class="flex flex-col items-center justify-center">
-            <div v-if="!isOtpSent"
-                style="border-radius: 56px; padding: 0.3rem; width: 100%; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
-                <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
-                    <div class="flex flex-col items-center justify-center">
-                        <Toast />
-                        <label class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-4">Enter
-                            OTP</label>
-                        <div class="otp-container mb-4">
-                            <input v-for="(digit, index) in otpArray" :key="index" type="password" maxlength="1"
-                                class="otp-input" v-model="otpArray[index]" @input="handleInput(index)"
-                                @keydown="handleKeydown($event, index)" @paste="handlePaste($event)" ref="otpInputs" />
-                        </div>
-                        <Button type="button" label="Reset Password" @click="submitOtp" :disabled="isLoading"
-                            class="w-full flex justify-center items-center gap-2">
-                            <i v-if="isLoading" class="pi pi-spinner pi-spin"></i>
-                        </Button>
+    <div class="flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-gradient">
+        <div class="flex justify-center w-full mb-8">
+            <img src="../../../assets/Images/logo.webp" alt="logo" class="w-[170px]" />
+        </div>
+
+        <div class="w-full max-w-3xl">
+            <div class="rounded-[56px] p-[0.3rem] w-full">
+                <div class="bg-surface-0 dark:bg-surface-900 rounded-xl py-12 px-6 sm:px-12 md:px-20 shadow-md">
+                    <div class="text-center mb-4">
+                        <h2 class="font-medium text-2xl text-theme-color">OTP Verification</h2>
+                        <h1 class="font-medium text-1xl sm:text-1xl text-theme-color">
+                            Enter the 6-digit code sent to your email.</h1>
                     </div>
+                    <Toast />
+                    <div class="otp-container mb-6">
+                        <input v-for="(digit, index) in otpArray" :key="index" type="password" maxlength="1"
+                            class="otp-input" v-model="otpArray[index]" @input="handleInput(index)"
+                            @keydown="handleKeydown($event, index)" @paste="handlePaste($event)" ref="otpInputs" />
+                    </div>
+                    <Button type="button" :disabled="isLoading" @click="submitOtp"
+                        class="w-full flex justify-center items-center gap-2 text-white brand-button font-medium relative">
+                        <i v-if="isLoading" class="pi pi-spinner pi-spin text-white"></i>
+                        <span class="ml-2">
+                            Verify OTP
+                        </span>
+                    </Button>
                 </div>
             </div>
         </div>
@@ -28,24 +34,21 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { AuthService } from '@/service/AuthService';
 import { useToast } from 'primevue/usetoast';
 import { showToast } from '@/utils/Helper';
+import { AuthService } from '@/service/AuthService';
 
 const toast = useToast();
 const otpArray = ref(['', '', '', '', '', '']);
 const otpInputs = ref([]);
 const isLoading = ref(false);
-const isFieldEmpty = ref(false);
-const error = ref('');
-const isOtpSent = ref(false);
 const router = useRouter();
 const route = useRoute();
 const token = route.query.token;
 
 const handleInput = (index) => {
     const input = otpArray.value[index];
-    // Ensure only numbers are accepted
+
     if (/\D/.test(input)) {
         otpArray.value[index] = '';
         return;
@@ -63,31 +66,26 @@ const handleKeydown = (event, index) => {
 };
 
 const handlePaste = (event) => {
-  event.preventDefault();
-  const pasteData = event.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
-  if (pasteData.length === 0) return;
+    event.preventDefault();
+    const pasteData = event.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    if (pasteData.length === 0) return;
 
-  for (let i = 0; i < pasteData.length; i++) {
-    otpArray.value[i] = pasteData[i];
-  }
+    for (let i = 0; i < pasteData.length; i++) {
+        otpArray.value[i] = pasteData[i];
+    }
 
-  // Focus the next empty input (or last one)
-  const nextIndex = pasteData.length < 6 ? pasteData.length : 5;
-  otpInputs.value[nextIndex].focus();
+    const nextIndex = pasteData.length < 6 ? pasteData.length : 5;
+    otpInputs.value[nextIndex].focus();
 };
 
 const submitOtp = async () => {
+    isLoading.value = true;
     const otp = otpArray.value.join('');
     if (otp.length !== 6) {
-        isFieldEmpty.value = true;
         showToast(toast, "error", "Error", 'Please enter a valid 6-digit OTP');
-
+        isLoading.value = false;
         return;
     }
-
-    isFieldEmpty.value = false;
-    isLoading.value = true;
-
     try {
         const payload = { otp, token };
         const response = await AuthService.otpVarification(payload);
@@ -104,7 +102,6 @@ const submitOtp = async () => {
     }
 };
 
-// Focus first input on mount
 onMounted(() => {
     if (otpInputs.value.length > 0) {
         otpInputs.value[0].focus();
@@ -127,13 +124,10 @@ onMounted(() => {
     border: 2px solid #ccc;
     border-radius: 5px;
     -webkit-text-security: disc;
-    /* WebKit browsers */
-    text-security: disc;
-    /* Not widely supported */
 }
 
 .otp-input:focus {
-    border-color: dodgerblue;
+    border-color: var(--accent-start);
     outline: none;
 }
 </style>

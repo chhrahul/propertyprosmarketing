@@ -1,11 +1,10 @@
 <script setup>
-import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
-import { useRouter, useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
-import { AuthService } from "../../../service/AuthService.js";
-import { formValidation, showToast } from "../../../utils/Helper.js";
 import { useToast } from 'primevue/usetoast';
+import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/auth';
+import { AuthService } from "@/service/AuthService";
+import { formValidation, showToast } from "@/utils/Helper";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 const registerPageUrl = import.meta.env.VITE_REGISTER_PAGE_URL;
@@ -18,13 +17,13 @@ const toast = useToast();
 const email = ref('');
 const password = ref('');
 const rememberMe = ref(false);
-const isLoading = ref(false); // 🔄 loader flag
+const isLoading = ref(false);
 
 onMounted(() => {
   const error = route.query.error;
   if (error) {
     showToast(toast, "error", "Error", decodeURIComponent(error));
-    router.replace({ query: {} }); 
+    router.replace({ query: {} });
   }
 });
 
@@ -33,6 +32,7 @@ const forgetpassword = () => {
 };
 
 const loginHandler = async () => {
+  isLoading.value = true;
   const fromValues = {
     email: email.value,
     password: password.value,
@@ -43,10 +43,10 @@ const loginHandler = async () => {
     showToast(toast, "error", "Error", validation);
     email.value = "";
     password.value = "";
+    isLoading.value = false;
     return;
   }
 
-  isLoading.value = true;
   try {
     const loginUserDetails = await AuthService.login(fromValues);
     if (loginUserDetails.error) {
@@ -72,91 +72,58 @@ const registerPage = () => {
 };
 </script>
 
-
 <template>
-    <div class="section-gradient">
-      <img src="../../../assets/Images/logo.webp" alt="logo" class="w-[150px]"/>
+  <div class="flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-gradient">
+    <div class="flex justify-center w-full mb-8">
+      <img src="../../../assets/Images/logo.webp" alt="logo" class="w-[170px]" />
     </div>
-  <div
-    class="bg-surface-50 dark:bg-surface-950 flex flex-col items-center justify-center min-h-screen w-full overflow-hidden">  
     <div class="w-full max-w-3xl">
-      <div class="rounded-[56px] p-[0.3rem] w-full"
-        style="background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
-        <div class="bg-surface-0 dark:bg-surface-900 rounded-[53px] py-12 px-6 sm:px-12 md:px-20">
-          <div class="text-center mb-8">
-            <h1 class="text-muted-color font-medium text-2xl sm:text-3xl">Welcome Back! Please log in to access your
-              affiliate portal.</h1>
+      <div class="rounded-[56px] p-[0.3rem] w-full">
+        <div class="bg-surface-0 dark:bg-surface-900 rounded-xl py-12 px-6 sm:px-12 md:px-20 shadow-md">
+          <div class="text-center mb-3">
+            <h1 class="font-medium text-2xl sm:text-2xl text-theme-color">
+              Welcome Back!
+            </h1>
+            <h1 class="font-medium text-1xl sm:text-1xl text-theme-color">
+              Please log in to access your affiliate portal.
+            </h1>
           </div>
-          <div class="text-center mb-8">
-            <h1 class="text-muted-color font-medium text-2xl sm:text-3xl">Sign In</h1>
-          </div>
-
-          <!-- Toast -->
           <Toast />
-
-          <!-- Form -->
           <div>
-            <!-- Email -->
-            <label for="email1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">
+            <label for="email1"
+              class="block text-surface-900 dark:text-surface-0 text-base sm:text-medium font-medium mb-2 text-theme-color ">
               Email
             </label>
-            <InputText
-              id="email1"
-              v-model="email"
-              type="text"
-              placeholder="Email address"
-              class="w-full mb-6"
-            />
-
-            <!-- Password -->
-            <label for="password1" class="block text-surface-900 dark:text-surface-0 text-base sm:text-lg font-medium mb-2">
+            <InputText id="email1" v-model="email" type="text" placeholder="Email" class="w-full mb-4 field" />
+            <label for="password1"
+              class="block text-surface-900 dark:text-surface-0 text-base sm:text-medium font-medium mb-2 text-theme-color">
               Password
             </label>
-            <Password
-              id="password1"
-              v-model="password"
-              placeholder="Password"
-              :toggleMask="true"
-              class="w-full mb-4"
-              fluid
-              :feedback="false"
-            />
-
-            <!-- Forgot Password -->
-            <div class="flex justify-end mt-2 mb-6">
-              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer" @click="forgetpassword">
+            <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full field"
+              fluid :feedback="false" />
+            <div class="flex justify-end mt-1 mb-5">
+              <span class="font-medium text-sm sm:text-base cursor-pointer text-theme-color hover-underline"
+                @click="forgetpassword">
                 Forgot password?
               </span>
             </div>
-
-            <!-- Sign In Button -->
-            <Button
-              type="button"
-              :label="isLoading ? 'Signing In...' : 'Sign In'"
-              @click="loginHandler"
-              :disabled="isLoading"
-              class="w-full flex justify-center items-center gap-2"
-            >
-              <i v-if="isLoading" class="pi pi-spinner pi-spin"></i>
+            <Button type="button" :disabled="isLoading" @click="loginHandler"
+              class="w-full flex justify-center items-center gap-2 text-white brand-button font-medium relative">
+              <i v-if="isLoading" class="pi pi-spinner pi-spin text-white"></i>
+              <span class="ml-2">
+                {{ isLoading ? 'Signing In...' : 'Sign In' }}
+              </span>
             </Button>
-
-            <!-- Google Sign-In -->
-            <Button
-              label="Sign in with Google"
-              icon="pi pi-google"
-              class="w-full mt-4 bg-white text-black border border-gray-300 hover:bg-gray-100"
-              @click="googleSignIn"
-            />
-
-            <!-- Register CTA -->
+            <Button label="Sign in with Google" icon="pi pi-google"
+              class="google-button w-full mt-4 flex items-center justify-center gap-2" @click="googleSignIn" />
             <div class="text-center mt-8">
-              <span class="font-medium text-sm sm:text-base text-primary cursor-pointer" @click="registerPage">
-                Don’t have an account? Create your account now!
+              <span class="font-medium text-sm sm:text-base" @click="registerPage">
+                <span class="text-black">Don’t have an account? </span><span
+                  class="text-theme-color cursor-pointer hover-underline">Sign Up</span>
               </span>
             </div>
           </div>
-
-          <div class="text-center">Property Pros Marketing | Affiliate Access</div>
+          <div class="text-center text-sm text-theme-color font-medium">Property Pros Marketing | Affiliate Access</div>
         </div>
       </div>
     </div>
@@ -164,14 +131,30 @@ const registerPage = () => {
 </template>
 
 <style scoped>
-.pi-eye,
-.pi-eye-slash {
-  transform: scale(1.6);
-  margin-right: 1rem;
+.google-button {
+  background-color: #ffffff;
+  color: #333333 !important;
+  border: 1px solid #dcdcdc;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.section-gradient {
-  width: 100%;
-  background: linear-gradient(180deg, #395E70, #17242D);
+.google-button:hover {
+  background-color: #f1f1f1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  cursor: pointer !important;
+  border: 1px solid #f1f1f1 !important;
+}
+
+.google-button:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.4) !important;
+}
+
+.field :deep(.p-inputtext:focus) {
+  border-color: var(--accent-start) !important;
 }
 </style>
