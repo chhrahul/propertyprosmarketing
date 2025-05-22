@@ -1,19 +1,13 @@
-<script setup>
-import { useLayout } from '@/layout/composables/layout';
-import AppConfigurator from '@/layout/AppConfigurator.vue';
-const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
-</script>
-
 <template>
     <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" @click="toggleMenu">
                 <i class="pi pi-bars"></i>
             </button>
-            <!-- <router-link to="/" class="layout-topbar-logo">
-                <span>Affiliate Customer Portal</span>
-            </router-link> -->
-            <div class="w-[100px]"><img src="../assets/Images/logo.webp" alt="Logo" class="layout-topbar-logo" /></div>
+            <router-link to="/" class="layout-topbar-logo">
+                <div class="w-[126px]"><img src="../assets/Images/logo.webp" alt="Logo" class="layout-topbar-logo" />
+                </div>
+            </router-link>
         </div>
 
         <div class="layout-topbar-actions">
@@ -31,7 +25,6 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 .active-link {
     background-color: #10b981;
     border-radius: 50px;
-    /* Optional: for better UI */
 }
 
 .active-link button i {

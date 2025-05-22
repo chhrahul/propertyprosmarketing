@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AutoComplete: typeof import('primevue/autocomplete')['default']
-    BestSellingWidget: typeof import('./src/components/dashboard/BestSellingWidget.vue')['default']
     Button: typeof import('primevue/button')['default']
     Chart: typeof import('primevue/chart')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
@@ -17,13 +16,9 @@ declare module 'vue' {
     FloatingConfigurator: typeof import('./src/components/FloatingConfigurator.vue')['default']
     InputText: typeof import('primevue/inputtext')['default']
     Menu: typeof import('primevue/menu')['default']
-    NotificationsWidget: typeof import('./src/components/dashboard/NotificationsWidget.vue')['default']
-    Password: typeof import('primevue/password')['default']
-    RecentSalesWidget: typeof import('./src/components/dashboard/RecentSalesWidget.vue')['default']
-    RevenueStreamWidget: typeof import('./src/components/dashboard/RevenueStreamWidget.vue')['default']
+    Password: typeof import('primevue/password')['default']  
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StatsWidget: typeof import('./src/components/dashboard/StatsWidget.vue')['default']
     Toast: typeof import('primevue/toast')['default']
   }
   export interface ComponentCustomProperties {

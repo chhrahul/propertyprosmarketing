@@ -1,56 +1,110 @@
-/* You can add global styles to this file, and also import other style files */
 @use "primeicons/primeicons.css";
 @use "@/assets/tailwind.css";
 @use "@/assets/layout/layout.scss";
 @use "@/assets/demo/demo.scss";
 
 .create_affiliate_link_modal {
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.25s ease-in-out;
+
   .panel {
     width: 100%;
-    max-width: 800px;
-    padding: 30px;
+    max-width: 720px;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    animation: slideInUp 0.3s ease-out;
+    position: relative;
+    transition: transform 0.3s ease;
 
     .new_affiliate_link {
+      display: flex;
+      flex-direction: column;
+
       .input-group {
-        position: relative;
         display: flex;
-        flex-wrap: nowrap;
         align-items: stretch;
-        width: 100%;
-        border-radius: 10px;
+        border: 1px solid #d9e2ec;
+        border-radius: 0.625rem;
         overflow: hidden;
-        border: 1px solid #d4dde7;
-        margin-bottom: 7px;
-
-        input {
-          width: 100%;
-          padding-inline: 15px;
-          outline: none;
-        }
-
-        // .form-control:focus {
-        //   color: #152332;
-        //   background-color: #ffffff;
-        //   border-color: #1884ff;
-        //   outline: 0;
-        //   box-shadow: 0 0 0 0.25rem rgba(24, 132, 255, 0.25);
-        // }
+        background: #f9fbfc;
 
         .input-group-text {
+          background: linear-gradient(
+            to right,
+            var(--accent-start),
+            var(--accent-end)
+          );
+          color: #fff;
+          font-weight: 500;
+          font-size: 0.875rem;
+          padding: 0.75rem 1rem;
           display: flex;
           align-items: center;
-          padding: 0.5rem 1rem;
-          font-size: 1rem;
-          font-weight: 400;
-          line-height: 1.75;
-          color: #3d4d5f;
-          text-align: center;
           white-space: nowrap;
-          background-color: #f2f6f9;
-          border-right: 1px solid #d4dde7;
+          border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        input {
+          flex: 1;
+          border: none;
+          padding: 0.75rem 1rem;
+          font-size: 0.9rem;
+          color: #1a202c;
+          background: transparent;
+          outline: none;
+
+          &:focus {
+            background-color: #fff;
+          }
+        }
+      }
+
+      input[type="text"] {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        background: #f9fbfc;
+
+        &:focus-visible {
+          outline: none;
+          background-color: #fff;
         }
       }
     }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
@@ -58,8 +112,13 @@
   background: linear-gradient(to right, var(--accent-end), var(--accent-start));
 
   .brand-button {
-    background: linear-gradient(
-      180deg,
+    // background: linear-gradient(
+    //   180deg,
+    //   var(--accent-start),
+    //   var(--accent-end)
+    // ) !important;
+    background-image: linear-gradient(
+      to right,
       var(--accent-start),
       var(--accent-end)
     ) !important;
@@ -75,12 +134,14 @@
   }
 
   .brand-button:hover {
-    background: linear-gradient(
-      180deg,
-      var(--accent-start-hover),
-      var(--accent-end-hover)
-    ) !important;
-    box-shadow: 1px 2px 10px 2px rgba(0, 0, 0, 0.3) !important;
+    // background: linear-gradient(
+    //   180deg,
+    //   var(--accent-start-hover),
+    //   var(--accent-end-hover)
+    // ) !important;
+    box-shadow: 1px 2px 10px 2px rgba(0, 0, 0, 0.2) !important;
+    filter: brightness(1.1) !important;
+    // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
     border: none !important;
   }
 
@@ -100,4 +161,16 @@
   .field:focus {
     border-color: #cbd5e1 !important;
   }
+}
+
+.gradient-heading {
+  background: linear-gradient(
+    to right,
+    var(--accent-start),
+    var(--accent-end)
+  ) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
 }

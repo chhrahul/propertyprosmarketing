@@ -3,14 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #c3f063;
   --accent-start: #395e70;
   --accent-end: #17242d;
   --text-muted: #e0e0e0;
   --input-bg: #1f2a33;
 
   --box-shadow: #bbb3acff;
+  --active-link: #1884ff;
 
   --accent-start-hover: #2c4756;
   --accent-end-hover: #111a21;
+  --active-link-hover: #136acc;
 }

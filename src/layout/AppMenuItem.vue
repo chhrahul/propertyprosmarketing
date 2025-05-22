@@ -31,22 +31,20 @@ const isActiveMenu = ref(false);
 const itemKey = ref(null);
 
 onBeforeMount(() => {
-    itemKey.value = props.parentItemKey ? props.parentItemKey + '-' + props.index : String(props.index);
-
-    const activeItem = layoutState.activeMenuItem;
-
-    isActiveMenu.value = activeItem === itemKey.value || activeItem ? activeItem.startsWith(itemKey.value + '-') : false;
+    itemKey.value = props.parentItemKey ? `${props.parentItemKey}-${props.index}` : `${props.index}`;
+    isActiveMenu.value = props.item.to === route.path;
 });
 
 watch(
-    () => layoutState.activeMenuItem,
-    (newVal) => {
-        isActiveMenu.value = newVal === itemKey.value || newVal.startsWith(itemKey.value + '-');
-    }
+    () => route.path,
+    () => {
+        isActiveMenu.value = props.item.to === route.path;
+    },
+    { immediate: true }
 );
 
 function itemClick(event, item) {
-    if(item.label == "Logout"){
+    if (item.label == "Logout") {
         localStorage.removeItem('token');
         router.push({ name: 'login' });
     }
@@ -68,33 +66,50 @@ function itemClick(event, item) {
     setActiveMenuItem(foundItemKey);
 }
 
-function checkActiveRoute(item) {
-    console.log("route path",route.path, "item path", item.to);
-    if (item.to === '/') return 0;
-
-    return route.path.startsWith(item.to);
-}
 </script>
 
 <template>
     <li :class="{ 'layout-root-menuitem': root, 'active-menuitem': isActiveMenu }">
-        <div v-if="root && item.visible !== false" class="layout-menuitem-root-text">{{ item.label }}</div>
-        <a v-if="(!item.to || item.items) && item.visible !== false" :href="item.url" @click="itemClick($event, item, index)" :class="item.class" :target="item.target" tabindex="0">
+        <h5 v-if="root && item.visible !== false" class="text-2xl font-medium gradient-heading">{{ item.label }}</h5>
+
+        <router-link exactActiveClass="active-route" active-class="active-route"
+            v-if="item.to && !item.items && item.visible !== false" @click="itemClick($event, item, index)" tabindex="0"
+            :to="item.to">
             <i :class="item.icon" class="layout-menuitem-icon"></i>
-            <span class="layout-menuitem-text">{{ item.label }}</span>
-            <i class="pi pi-fw pi-angle-down layout-submenu-toggler" v-if="item.items"></i>
-        </a>
-        <router-link exactActiveClass="active-route" active-class="active-route" v-if="item.to && !item.items && item.visible !== false" @click="itemClick($event, item, index)"  tabindex="0" :to="item.to">
-            <i :class="item.icon" class="layout-menuitem-icon"></i>
-            <span class="layout-menuitem-text">{{ item.label }}</span>
-            <i class="pi pi-fw pi-angle-down layout-submenu-toggler" v-if="item.items"></i>
+            <span class="layout-menuitem-text" :class="{ 'active-route': isActiveMenu, 'lable-text': !isActiveMenu }">
+                {{ item.label }}
+            </span>
+
+            <i class="pi pi-fw pi-angle-down layout-submenu-toggler  lable-text" v-if="item.items"></i>
         </router-link>
+
+        <a v-else-if="!item.to && !item.items && item.visible !== false" href="#"
+            @click.prevent="itemClick($event, item)" class="layout-menuitem-text"
+            :style="{ color: isActiveMenu ? 'var(--active-link)' : 'var(--accent-end)' }">
+            <i :class="item.icon" class="layout-menuitem-icon"></i>
+            <span>{{ item.label }}</span>
+        </a>
+
         <Transition v-if="item.items && item.visible !== false" name="layout-submenu">
             <ul v-show="root ? true : isActiveMenu" class="layout-submenu">
-                <app-menu-item v-for="(child, i) in item.items" :key="child" :index="i" :item="child" :parentItemKey="itemKey" :root="false"></app-menu-item>
+                <app-menu-item v-for="(child, i) in item.items" :key="child" :index="i" :item="child"
+                    :parentItemKey="itemKey" :root="false"></app-menu-item>
             </ul>
         </Transition>
     </li>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.active-route {
+    font-weight: 700;
+    color: var(--active-link) !important;
+}
+
+.active-route:hover {
+    color: var(--active-link-hover) !important;
+}
+
+.lable-text {
+    color: var(--accent-end);
+}
+</style>
