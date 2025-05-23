@@ -67,7 +67,7 @@
                     </tr>
 
                     <!-- Data Rows -->
-                    <tr v-for="payout in filteredPayouts" :key="payout.id"
+                    <tr v-for="(payout,index) in filteredPayouts" :key="payout.id"
                         :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
                         <td class="px-4 py-3 text-base text-sm  text-theme-color">
                             <span
