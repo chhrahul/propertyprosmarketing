@@ -5,8 +5,8 @@
         <ul class="flex border-b mb-4">
             <li class="mr-4">
                 <a href="#" @click.prevent="setActiveTab('lead')"
-                    :class="activeTab === 'lead' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-600'"
-                    class="py-3 px-4 inline-block border-b-2 hover:border-blue-500 relative">
+                    :class="['py-3 px-4 inline-block border-b-2 custom-tab relative', activeTab === 'lead' ? 'active-tab' : 'inactive-tab']">
+
                     Leads
                     <span v-if="totalLeads !== 0"
                         class="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center text-xs font-semibold text-white bg-red-500 rounded-full shadow">
@@ -16,8 +16,7 @@
             </li>
             <li>
                 <a href="#" @click.prevent="setActiveTab('conversion')"
-                    :class="activeTab === 'conversion' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-600'"
-                    class="relative py-3 px-4 inline-flex items-center border-b-2 hover:border-blue-500">
+                    :class="['py-3 px-4 inline-block border-b-2 custom-tab relative', activeTab === 'conversion' ? 'active-tab' : 'inactive-tab']">
                     Conversion
                     <span v-if="totalConversions !== 0"
                         class="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center text-xs font-semibold text-white bg-red-500 rounded-full shadow">
@@ -28,15 +27,20 @@
         </ul>
 
         <div class="overflow-x-auto">
-            <table class="w-full border rounded-lg">
-                <thead class="bg-gray-100 text-gray-700">
+            <table class="w-full border">
+                <thead class="bg-gray-100 uppercase">
                     <tr>
-                        <th class="p-4 text-left">Link</th>
-                        <th class="p-4 text-center">First click</th>
-                        <th class="p-4 text-center">Became lead</th>
-                        <th v-if="activeTab === 'conversion'" class="p-4 text-center">Converted</th>
-                        <th v-if="activeTab === 'conversion'" class="p-4 text-left">Subscription</th>
-                        <th v-if="activeTab === 'lead'" class="p-4 text-center">Customer</th>
+                        <th class="p-4 text-left px-4 py-3 text-base text-lg font-medium text-theme-color">Link</th>
+                        <th class="text-center px-4 py-3 text-base text-lg font-medium text-theme-color">First click
+                        </th>
+                        <th class="text-center px-4 py-3 text-base text-lg font-medium text-theme-color">Became lead
+                        </th>
+                        <th v-if="activeTab === 'conversion'"
+                            class="text-center px-4 py-3 text-base text-lg font-medium text-theme-color">Converted</th>
+                        <th v-if="activeTab === 'conversion'"
+                            class="px-4 py-3 text-base text-lg font-medium text-theme-color text-left">Subscription</th>
+                        <th v-if="activeTab === 'lead'"
+                            class="px-4 py-3 text-base text-lg font-medium text-theme-colortext-center">Customer</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,20 +59,32 @@
                     </tr>
 
                     <tr v-else-if="filteredReferrals.length === 0">
-                        <td colspan="6" class="py-4 text-center text-gray-500">
-                            <p class="text-lg">No result found.</p>
+                        <td colspan="6" class="py-4 text-center">
+                            <p class="text-sm">No result found.</p>
                         </td>
                     </tr>
 
-                    <tr v-for="referral in filteredReferrals" :key="referral.id">
-                        <td class="p-4 text-left">
-                            <a :href="referral.link?.url" class="text-blue-500 hover:underline">{{ referral.link?.token || 'N/A' }}</a>
+                    <tr v-for="(referral, index) in filteredReferrals" :key="referral.id"
+                        :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                        <td class="px-4 py-3 text-base text-sm  text-theme-color">
+                            <a :href="referral.link?.url" class="hover:underline">{{ referral.link?.token
+                        || 'N/A' }}
+                            </a>
                         </td>
-                        <td class="p-4 text-center">{{ formatDate(referral.created_at) }}</td>
-                        <td class="p-4 text-center">{{ formatDate(referral.became_lead_at) || 'N/A' }}</td>
-                        <td v-if="activeTab === 'conversion'" class="p-4 text-center">{{ formatDate(referral.became_conversion_at) || 'N/A' }}</td>
-                        <td v-if="activeTab === 'conversion'" class="p-4 text-left">{{ capitalize(referral.conversion_state) }}</td>
-                        <td v-if="activeTab === 'lead'" class="p-4 text-center">{{ referral.customer?.name || 'N/A' }}</td>
+                        <td class="px-4 py-3 text-center text-base text-sm text-theme-color">{{
+                        formatDate(referral.created_at) }}</td>
+                        <td class="px-4 py-3 text-center text-base text-sm text-theme-color">{{
+                        formatDate(referral.became_lead_at) || 'N/A' }}</td>
+                        <td v-if="activeTab === 'conversion'"
+                            class="px-4 py-3 text-center text-base text-sm text-theme-color">{{
+                        formatDate(referral.became_conversion_at) || 'N/A' }}</td>
+                        <td v-if="activeTab === 'conversion'"
+                            class="px-4 py-3 text-center text-base text-sm text-theme-color">{{
+                        capitalize(referral.conversion_state) }}</td>
+                        <td v-if="activeTab === 'lead'"
+                            class="px-4 py-3 text-center text-base text-sm text-theme-color">{{ referral.customer?.name
+                        || 'N/A' }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -141,3 +157,35 @@ const formatDate = (date) => date ? new Date(date).toLocaleDateString() : 'N/A';
 
 onMounted(fetchReferralsData);
 </script>
+
+<style scoped>
+.custom-tab {
+    font-weight: 500;
+    color: var(--accent-end);
+    border-color: var(--accent-end);
+    transition: all 0.3s ease;
+}
+
+.active-tab {
+    color: var(--active-link);
+    border-color: var(--active-link);
+}
+
+.active-tab:hover {
+    color: var(--active-link-hover);
+    border-color: var(--active-link-hover);
+}
+
+.inactive-tab {
+    border-color: transparent;
+}
+
+.inactive-tab:hover {
+    color: var(--active-link);
+    border-color: var(--active-link);
+}
+
+svg.animate-spin {
+    color: var(--accent-end);
+}
+</style>

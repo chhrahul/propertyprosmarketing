@@ -45,8 +45,7 @@ const model = computed(() =>
       items: [
         {
           label: "Logout",
-          icon: "pi pi-fw pi-sign-in",
-          // to: "/",
+          icon: "pi pi-fw pi-sign-in",          
           command: () => {
             localStorage.removeItem("token");
             router.push({ name: "login" });

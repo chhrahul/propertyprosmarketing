@@ -90,13 +90,11 @@ const registerPage = () => {
           </div>
           <Toast />
           <div>
-            <label for="email1"
-              class="block text-surface-900 dark:text-surface-0 text-base sm:text-medium font-medium mb-2 text-theme-color ">
+            <label for="email1" class="block  text-base sm:text-medium font-medium mb-2 text-theme-color ">
               Email
             </label>
             <InputText id="email1" v-model="email" type="text" placeholder="Email" class="w-full mb-4 field" />
-            <label for="password1"
-              class="block text-surface-900 dark:text-surface-0 text-base sm:text-medium font-medium mb-2 text-theme-color">
+            <label for="password1" class="block  text-base sm:text-medium font-medium mb-2 text-theme-color">
               Password
             </label>
             <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full field"

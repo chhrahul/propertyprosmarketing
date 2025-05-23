@@ -70,7 +70,7 @@ function itemClick(event, item) {
 
 <template>
     <li :class="{ 'layout-root-menuitem': root, 'active-menuitem': isActiveMenu }">
-        <h5 v-if="root && item.visible !== false" class="text-2xl font-medium gradient-heading">{{ item.label }}</h5>
+        <h5 v-if="root && item.visible !== false" class="text-2xl font-medium">{{ item.label }}</h5>
 
         <router-link exactActiveClass="active-route" active-class="active-route"
             v-if="item.to && !item.items && item.visible !== false" @click="itemClick($event, item, index)" tabindex="0"
@@ -101,7 +101,7 @@ function itemClick(event, item) {
 
 <style lang="scss" scoped>
 .active-route {
-    font-weight: 700;
+    // font-weight: 600;
     color: var(--active-link) !important;
 }
 

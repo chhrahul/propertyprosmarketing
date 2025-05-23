@@ -23,11 +23,23 @@
 
 <style scoped>
 .active-link {
-    background-color: #10b981;
-    border-radius: 50px;
+    background: linear-gradient(to right, var(--accent-start), var(--accent-end));
+    border-radius: 50%;
+    padding: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.active-link button i {
-    color: #ffffff;
+.active-link:hover {
+    filter: brightness(1.1);
+}
+
+.active-link button i,
+.active-link i {
+    color: #fff;
+    font-size: 1.25rem;
 }
 </style>

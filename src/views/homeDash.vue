@@ -154,7 +154,7 @@ const formattedCommissionStats = computed(() => {
         <div v-if="affiliateData">
             <div class="mb-6">
                 <div class="mb-6">
-                    <h5 class="text-2xl font-medium mb-4 gradient-heading">Referrals Overview</h5>
+                    <h5 class="text-2xl font-medium mb-4">Referrals Overview</h5>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div
                             class="transition-shadow hover:shadow-lg hover:-translate-y-0.5
@@ -261,19 +261,19 @@ p-4 rounded-lg shadow transition-all transform hover:scale-[1.01] border border-
             </div>
 
             <div class="flex flex-wrap justify-between items-center mb-4">
-                <h5 class="text-lg font-medium w-full sm:w-auto mb-2 sm:mb-0">Links</h5>
+                <h5 class="text-2xl font-medium w-full sm:w-auto mb-2 sm:mb-0">Links</h5>
                 <div class="text-sm text-gray-600 w-full sm:w-auto text-center sm:text-right">
-                    <h1 class="font-medium text-1xl sm:text-1xl text-theme-color gradient-heading">
+                    <h1 class="font-medium text-1xl sm:text-1xl text-theme-color">
                         Earn 10% Recurring/month for any client that comes from your affiliate link and works withus.
                     </h1>
                 </div>
             </div>
 
             <div class="mb-6 overflow-x-auto">
-                <table class="w-full text-sm text-left border-collapse">
-                    <thead class="bg-gray-100 text-xs uppercase">
+                <table class="w-full text-left border">
+                    <thead class="bg-gray-100 uppercase">
                         <tr>
-                            <th :class="[(index !== 0 && index !== 1) ? 'text-center' : '', 'px-4 py-3 text-base sm:text-medium font-medium text-theme-color']"
+                            <th :class="[(index !== 0 && index !== 1) ? 'text-center' : '', 'px-4 py-3 text-base text-lg font-medium text-theme-color']"
                                 v-for="(item, index) in  THEAD " :key="index">{{ item }}</th>
                         </tr>
                     </thead>
@@ -284,7 +284,7 @@ p-4 rounded-lg shadow transition-all transform hover:scale-[1.01] border border-
                                 {{ link.label || '—' }}
                             </td>
                             <td class="px-4 py-3 text-base text-sm  text-theme-color">
-                                <a class="text-blue-500 break-all"
+                                <a class="text-blue-500 break-all hover:underline"
                                     :href="PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token"
                                     target="_blank">
                                     {{ PROPERTY_PROS_MARKETING_URL + 'schedule-call?via=' + link.token }}
@@ -307,14 +307,13 @@ p-4 rounded-lg shadow transition-all transform hover:scale-[1.01] border border-
                                     </svg>
                                     Copy
                                 </button>
-
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div v-else class="flex justify-center items-center py-10">
+        <!-- <div v-else class="flex justify-center items-center py-10">
             <svg aria-hidden="true" class="inline w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -324,12 +323,20 @@ p-4 rounded-lg shadow transition-all transform hover:scale-[1.01] border border-
                     d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
                     fill="currentFill" />
             </svg>
+        </div> -->
+
+        <div v-else class="flex justify-center items-center py-10">
+            <svg aria-hidden="true" class="inline w-20 h-20 text-gray-200 animate-spin fill-blue-600"
+                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908..."
+                    fill="currentColor" />
+            </svg>
         </div>
 
         <div v-if="isModalOpen"
             class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 create_affiliate_link_modal">
             <div class="panel bg-white rounded-lg shadow-lg">
-                <h5 class="text-2xl font-medium mb-3 gradient-heading">Create a new link</h5>
+                <h5 class="text-2xl font-medium mb-3">Create a new link</h5>
                 <form class="new_affiliate_link" id="new_affiliate_link" @submit.prevent="createNewLink">
                     <div class="mb-3">
                         <div class="input-group">
@@ -347,26 +354,18 @@ p-4 rounded-lg shadow transition-all transform hover:scale-[1.01] border border-
                         <label class="block text-base sm:text-medium font-medium mb-2 text-theme-color">Optional
                             Label</label>
                         <input v-model="newLinkLabel" placeholder="e.g. Instagram Bio Link"
-                            class="w-full border rounded px-3 py-2 text-sm" type="text" />
+                            class="w-full border rounded-lg px-3 py-2 text-sm" type="text" />
                     </div>
 
                     <div class="flex justify-end space-x-2 mt-4">
-                        <!-- <button type="button" @click="closeModal"
-                            class="bg-gray-300 px-4 py-2 rounded text-sm hover:bg-gray-400" :disabled="loading">
-                            Cancel
-                        </button> -->
-
                         <button type="button" @click="closeModal"
                             class="cancel-button items-center justify-center gap-2" :disabled="loading">
                             Cancel
                         </button>
 
-                        <button type="submit" :disabled="loading"
-                            class="create-link-btn text-white font-semibold px-4 rounded-lg shadow transition duration-200">
+                        <button type="submit" :disabled="loading" class="create-link-btn text-white  px-4 py-2">
                             <i v-if="loading" class="pi pi-spinner pi-spin text-white"></i>
-                            <span class="ml-2">
-                                {{ loading ? '+ Create Link' : '+ Create Link' }}
-                            </span>
+                            {{ loading ? '+ Create Link' : '+ Create Link' }}
                         </button>
                     </div>
 
@@ -377,8 +376,7 @@ p-4 rounded-lg shadow transition-all transform hover:scale-[1.01] border border-
 
     <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-md p-4 z-50">
         <div class="mx-auto flex justify-end">
-            <button @click="openModal"
-                class="create-link-btn text-white font-semibold px-5 py-2 rounded-lg shadow transition duration-200">
+            <button @click="openModal" class="create-link-btn text-white px-5 py-2">
                 + Create New Link
             </button>
         </div>
@@ -419,6 +417,7 @@ a {
 }
 
 a:hover {
+    text-decoration: underline;
     color: var(--active-link-hover) !important;
 }
 
@@ -451,7 +450,7 @@ a:hover {
     color: white;
     border: none !important;
     font-weight: 600;
-    padding: 0.5rem 1.25rem;
+    /* padding: 0.5rem 1.25rem; */
     border-radius: 0.5rem;
     font-size: 0.875rem;
     transition: all 0.2s ease;
