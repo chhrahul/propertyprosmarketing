@@ -71,13 +71,13 @@
     .layout-wrapper {
         .layout-main-container {
             margin-left: 0;
-            padding-left: 2rem;
+            // padding-left: 2rem;
         }
 
         .layout-sidebar {
             transform: translateX(-100%);
             left: 0;
-            top: 56px;
+            top: 84px;
             z-index: 9999;
             height: calc(100vh - 56px);
             border-radius: 0;
