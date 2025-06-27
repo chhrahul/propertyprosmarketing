@@ -74,8 +74,8 @@ const registerPage = () => {
 
 <template>
   <div class="flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-gradient">
-    <div class="flex justify-center w-full mb-8">
-      <img src="../../../assets/Images/logo.webp" alt="logo" class="w-[170px]" />
+    <div class="flex justify-center w-full">
+      <img src="../../../assets/Images/logo-2.png" alt="logo" class="w-[250px]" />
     </div>
     <div class="w-full max-w-3xl">
       <div class="rounded-[56px] p-[0.3rem] w-full">

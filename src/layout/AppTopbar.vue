@@ -9,7 +9,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                 <i class="pi pi-bars"></i>
             </button>
             <router-link to="/" class="layout-topbar-logo">
-                <div class="w-[126px]"><img src="../assets/Images/logo.webp" alt="Logo" class="layout-topbar-logo" />
+                <div class="w-[150px]"><img src="../assets/Images/logo-2.png" alt="Logo" class="layout-topbar-logo" />
                 </div>
             </router-link>
         </div>
