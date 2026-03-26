@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const apiBaseUrl = `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "")}/`;
+
 const HTTP = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL
+    baseURL: apiBaseUrl
 });
 // Alter defaults after instance has been created
 let AUTH_TOKEN = localStorage.getItem('token');

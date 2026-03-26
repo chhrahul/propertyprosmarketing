@@ -6,7 +6,7 @@ import { useAuthStore } from '@/store/auth';
 import { AuthService } from "@/service/AuthService";
 import { formValidation, showToast } from "@/utils/Helper";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+const baseURL = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
 const registerPageUrl = import.meta.env.VITE_REGISTER_PAGE_URL;
 
 const router = useRouter();
