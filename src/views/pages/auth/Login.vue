@@ -65,7 +65,7 @@ const loginHandler = async () => {
 };
 
 const googleSignIn = () => {
-  window.location.href = `${baseURL}auth/google`;
+  window.location.href = `${baseURL}/auth/google`;
 };
 const registerPage = () => {
   window.open(registerPageUrl, '_blank');
@@ -91,11 +91,11 @@ const registerPage = () => {
           <Toast />
           <div>
             <label for="email1" class="block  text-base sm:text-medium font-medium mb-2 text-theme-color ">
-              Email
+              Email <span class="text-red">*</span> 
             </label>
             <InputText id="email1" v-model="email" type="text" placeholder="Email" class="w-full mb-4 field" />
             <label for="password1" class="block  text-base sm:text-medium font-medium mb-2 text-theme-color">
-              Password
+              Password <span class="text-red">*</span>
             </label>
             <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full field"
               fluid :feedback="false" />
