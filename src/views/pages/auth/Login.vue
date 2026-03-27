@@ -34,8 +34,9 @@ const forgetpassword = () => {
 const loginHandler = async () => {
   isLoading.value = true;
   const fromValues = {
-    email: email.value,
+    email: email.value.trim(),
     password: password.value,
+    rememberMe: rememberMe.value,
   };
 
   const validation = formValidation(fromValues);
