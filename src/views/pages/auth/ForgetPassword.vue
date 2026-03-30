@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-gradient">
+    <div class="auth-page flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-gradient">
         <div class="flex justify-center w-full">
             <img src="../../../assets/Images/logo-2.png" alt="logo" class="w-[250px]" />
         </div>

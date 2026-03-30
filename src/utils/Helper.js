@@ -25,27 +25,54 @@ export const emitAppToast = (type, summary, message, life = 3000) => {
     }));
 }
 
+const PASSWORD_REQUIREMENTS_MESSAGE =
+    "Password must be at least 12 characters and include uppercase, lowercase, number, and special character, with no spaces.";
+
 export const validateModernPassword = (password, context = {}) => {
     const value = (password || "").trim();
 
     if (!value) return "Please enter your password";
-    if (value.length < 12) return "Password must be at least 12 characters long";
-    if (/\s/.test(value)) return "Password cannot contain spaces";
-    if (!/[a-z]/.test(value)) return "Password must include at least one lowercase letter";
-    if (!/[A-Z]/.test(value)) return "Password must include at least one uppercase letter";
-    if (!/\d/.test(value)) return "Password must include at least one number";
-    if (!/[^A-Za-z0-9]/.test(value)) return "Password must include at least one special character";
+    if (
+        value.length < 12 ||
+        /\s/.test(value) ||
+        !/[a-z]/.test(value) ||
+        !/[A-Z]/.test(value) ||
+        !/\d/.test(value) ||
+        !/[^A-Za-z0-9]/.test(value)
+    ) {
+        return PASSWORD_REQUIREMENTS_MESSAGE;
+    }
 
     const email = (context.email || "").toLowerCase().trim();
     if (email) {
         const localPart = email.split("@")[0];
         if (localPart && value.toLowerCase().includes(localPart)) {
-            return "Password should not contain your email name";
+            return `${PASSWORD_REQUIREMENTS_MESSAGE} It also cannot contain your email name.`;
         }
     }
 
     if (context.currentPassword && value === context.currentPassword) {
         return "New password must be different from your current password";
+    }
+
+    return true;
+}
+
+const tempMailDomains = new Set([
+    "mailinator.com", "tempmail.com", "10minutemail.com", "yopmail.com",
+    "guerrillamail.com", "trashmail.com", "getnada.com", "maildrop.cc"
+]);
+
+export const validateBusinessEmail = (email, fieldName = "Email") => {
+    const value = (email || "").trim().toLowerCase();
+    if (!value) return `${fieldName} is required`;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) return `Please enter a valid ${fieldName.toLowerCase()}`;
+
+    const domain = value.split("@")[1];
+    if (tempMailDomains.has(domain)) {
+        return `${fieldName} cannot use a temporary or disposable email domain`;
     }
 
     return true;

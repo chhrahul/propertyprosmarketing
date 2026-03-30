@@ -89,7 +89,7 @@ import { useAuthStore } from "@/store/auth";
 import { AuthService } from '@/service/AuthService';
 import { rewardfulService } from "@/service/rewardfulService";
 import { useToast } from 'primevue/usetoast';
-import { showToast, validateModernPassword } from "../utils/Helper";
+import { showToast, validateBusinessEmail, validateModernPassword } from "../utils/Helper";
 
 const toast = useToast();
 const store = useAuthStore();
@@ -127,6 +127,12 @@ const handleSubmit = async () => {
   const nameRegex = /^[a-zA-Z\s]+$/;
   if (!nameRegex.test(affiliateData.value.first_name) || !nameRegex.test(affiliateData.value.last_name)) {
     showToast(toast, "error", "Error", "First and Last names must only contain letters.");
+    return;
+  }
+
+  const paypalEmailValidation = validateBusinessEmail(affiliateData.value.paypal_email, "PayPal email");
+  if (paypalEmailValidation !== true) {
+    showToast(toast, "error", "Error", paypalEmailValidation);
     return;
   }
 
