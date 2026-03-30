@@ -262,7 +262,23 @@ svg.animate-spin {
   top: 1rem !important;
 }
 
+.auth-page .p-toast {
+  position: fixed !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: min(24rem, calc(100vw - 2rem)) !important;
+  margin: 0 !important;
+}
+
 @media (max-width: 991px) {
+  .auth-page .p-toast {
+    top: 0.75rem !important;
+    right: 0.5rem !important;
+    width: min(24rem, calc(100vw - 1rem)) !important;
+  }
+
   .auth-page .p-toast-top-right,
   .auth-page .p-toast-top-left,
   .auth-page .p-toast-top-center {
