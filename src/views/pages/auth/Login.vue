@@ -42,7 +42,6 @@ const loginHandler = async () => {
   const validation = formValidation(fromValues);
   if (validation !== true) {
     showToast(toast, "error", "Error", validation);
-    email.value = "";
     password.value = "";
     isLoading.value = false;
     return;
@@ -52,7 +51,6 @@ const loginHandler = async () => {
     const loginUserDetails = await AuthService.login(fromValues);
     if (loginUserDetails.error) {
       showToast(toast, "error", "Error", loginUserDetails.error);
-      email.value = "";
       password.value = "";
     } else {
       authStore.setUserLoginDetail(loginUserDetails);
