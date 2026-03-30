@@ -1,13 +1,16 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useToast } from 'primevue/usetoast';
 // import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppTopbar from './AppTopbar.vue';
 
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
+const toast = useToast();
 
 const outsideClickListener = ref(null);
+const toastListener = ref(null);
 
 watch(isSidebarActive, (newVal) => {
     if (newVal) {
@@ -53,6 +56,22 @@ function isOutsideClicked(event) {
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 }
+
+onMounted(() => {
+    toastListener.value = (event) => {
+        if (!event?.detail) return;
+        toast.add(event.detail);
+    };
+
+    window.addEventListener('app-toast', toastListener.value);
+});
+
+onBeforeUnmount(() => {
+    if (toastListener.value) {
+        window.removeEventListener('app-toast', toastListener.value);
+        toastListener.value = null;
+    }
+});
 </script>
 
 <template>

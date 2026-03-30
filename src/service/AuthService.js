@@ -1,6 +1,7 @@
 import axios from "axios";
 import HTTP from "@/axios";
 import router from "@/router";
+import { emitAppToast } from "@/utils/Helper";
 
 const baseURL = `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "")}/`;
 
@@ -43,10 +44,11 @@ export const AuthService = {
 
             return user.data.value;
         } catch (error) {
-            alert("Session Expired");
             localStorage.removeItem('token');
+            emitAppToast("error", "Session Expired", "Please log in again to continue.");
             router.push({ name: 'login' });
             console.log("error : "+error.response?.data?.message);
+            return null;
         }
     },
     forgetPassword: async (payload) => {

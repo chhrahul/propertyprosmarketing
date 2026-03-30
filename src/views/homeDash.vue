@@ -75,7 +75,7 @@ const commissionMessage = computed(() => {
 
 const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => {
-        alert("Copied to clipboard!");
+        showToast(toast, "success", "Copied", "Referral link copied to clipboard.");
     }).catch((error) => {
         showToast(toast, "error", "Error", error);
     });
@@ -264,7 +264,7 @@ p-4 rounded-lg shadow transition-all transform hover:scale-[1.01] border border-
                 <h5 class="text-2xl font-medium w-full sm:w-auto mb-2 sm:mb-0">Links</h5>
                 <div class="text-sm text-gray-600 w-full sm:w-auto text-center sm:text-right">
                     <h1 class="font-medium text-1xl sm:text-1xl text-theme-color">
-                        Earn 10% Recurring/month for any client that comes from your affiliate link and works withus.
+                        Earn 10% Recurring/month for any client that comes from your affiliate link and works with us.
                     </h1>
                 </div>
             </div>
@@ -281,7 +281,7 @@ p-4 rounded-lg shadow transition-all transform hover:scale-[1.01] border border-
                         <tr v-for="( link, index ) in  affiliateData.links " :key="link.id"
                             :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
                             <td class="px-4 py-3 text-base text-sm  text-theme-color">
-                                {{ link.label || '—' }}
+                                {{ link.label || 'Default' }}
                             </td>
                             <td class="px-4 py-3 text-base text-sm  text-theme-color">
                                 <a class="text-blue-500 break-all hover:underline"

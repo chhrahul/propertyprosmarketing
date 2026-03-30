@@ -13,3 +13,14 @@ export const showToast = (toast, type, summary, message) => {
         life: 3000, // Time in milliseconds
     });
 }
+
+export const emitAppToast = (type, summary, message, life = 3000) => {
+    window.dispatchEvent(new CustomEvent('app-toast', {
+        detail: {
+            severity: type,
+            summary,
+            detail: message,
+            life,
+        },
+    }));
+}

@@ -1,8 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useToast } from 'primevue/usetoast';
+import { showToast } from '@/utils/Helper';
 
 const promoters = ref([]); // Reactive variable to store API data
+const toast = useToast();
 
 const fetchPromoters = async () => {
     try {
@@ -18,9 +21,10 @@ const fetchPromoters = async () => {
 const copyReferral = (referralLink) => {
     navigator.clipboard.writeText(referralLink)
         .then(() => {
-            alert('Referral link copied to clipboard!');
+            showToast(toast, 'success', 'Copied', 'Referral link copied to clipboard!');
         })
         .catch(err => {
+            showToast(toast, 'error', 'Error', 'Failed to copy referral link.');
             console.error('Failed to copy:', err);
         });
 };
