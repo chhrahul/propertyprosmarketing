@@ -92,9 +92,9 @@ const registerPage = () => {
           <Toast />
           <div>
             <label for="email1" class="block  text-base sm:text-medium font-medium mb-2 text-theme-color ">
-              Email <span class="text-red">*</span> 
+              Email or Username <span class="text-red">*</span> 
             </label>
-            <InputText id="email1" v-model="email" type="text" placeholder="Email" class="w-full mb-4 field" />
+            <InputText id="email1" v-model="email" type="text" placeholder="Email or Username" class="w-full mb-4 field" />
             <label for="password1" class="block  text-base sm:text-medium font-medium mb-2 text-theme-color">
               Password <span class="text-red">*</span>
             </label>
