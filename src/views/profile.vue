@@ -58,24 +58,21 @@
         <div class="mb-5">
           <label for="current-password"
             class="block  text-base sm:text-medium font-medium mb-2 text-theme-color">Current Password</label>
-          <input type="password" id="current-password" v-model="passwordData.current"
-            class="text-field shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-3"
-            required />
+          <Password id="current-password" v-model="passwordData.current" :toggleMask="true" class="w-full field"
+            fluid :feedback="false" />
         </div>
         <div class="mb-5">
           <label for="new-password" class="block  text-base sm:text-medium font-medium mb-2 text-theme-color">New
             Password</label>
-          <input type="password" id="new-password" v-model="passwordData.new"
-            class="text-field shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3"
-            required />
+          <Password id="new-password" v-model="passwordData.new" :toggleMask="true" class="w-full field" fluid
+            :feedback="false" />
         </div>
         <div class="mb-5">
           <label for="confirm-password"
             class="block  text-base sm:text-medium font-medium mb-2 text-theme-color">Confirm New
             Password</label>
-          <input type="password" id="confirm-password" v-model="passwordData.confirm"
-            class="text-field shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3"
-            required />
+          <Password id="confirm-password" v-model="passwordData.confirm" :toggleMask="true" class="w-full field"
+            fluid :feedback="false" />
         </div>
         <button type="submit" class="btn change-password-btn">Change
           Password</button>
@@ -92,7 +89,7 @@ import { useAuthStore } from "@/store/auth";
 import { AuthService } from '@/service/AuthService';
 import { rewardfulService } from "@/service/rewardfulService";
 import { useToast } from 'primevue/usetoast';
-import { showToast } from "../utils/Helper";
+import { showToast, validateModernPassword } from "../utils/Helper";
 
 const toast = useToast();
 const store = useAuthStore();
@@ -147,6 +144,24 @@ const handleSubmit = async () => {
 };
 
 const handlePasswordChange = async () => {
+  passwordData.value.current = passwordData.value.current.trim();
+  passwordData.value.new = passwordData.value.new.trim();
+  passwordData.value.confirm = passwordData.value.confirm.trim();
+
+  if (!passwordData.value.current) {
+    showToast(toast, "error", "Error", "Please enter your current password");
+    return;
+  }
+
+  const passwordValidation = validateModernPassword(passwordData.value.new, {
+    email: affiliateData.value.email,
+    currentPassword: passwordData.value.current
+  });
+  if (passwordValidation !== true) {
+    showToast(toast, "error", "Error", passwordValidation);
+    return;
+  }
+
   if (passwordData.value.new !== passwordData.value.confirm) {
     showToast(toast, "error", "Error", "Passwords do not match!");
     return;
@@ -203,6 +218,10 @@ const goBack = () => router.back();
 .text-field:focus-visible {
   outline: none !important;
   background-color: #fff !important;
+}
+
+.field :deep(.p-inputtext:focus) {
+  border-color: var(--accent-start) !important;
 }
 
 .user-icon {

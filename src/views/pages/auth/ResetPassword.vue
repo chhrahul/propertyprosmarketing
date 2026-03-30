@@ -16,14 +16,14 @@
                         class="block text-surface-900 dark:text-surface-0 text-base font-medium mb-2 text-theme-color">
                         New Password
                     </label>
-                    <InputText id="password" type="password" placeholder="Enter New Password" class="w-full mb-4 field"
-                        v-model="password" />
+                    <Password id="password" v-model="password" placeholder="Enter New Password" :toggleMask="true"
+                        class="w-full mb-4 field" fluid :feedback="false" />
                     <label for="confirmPassword"
                         class="block text-surface-900 dark:text-surface-0 text-base font-medium mb-2 text-theme-color">
                         Confirm Password
                     </label>
-                    <InputText id="confirmPassword" type="password" placeholder="Confirm Password"
-                        class="w-full mb-4 field" v-model="confirmPassword" />
+                    <Password id="confirmPassword" v-model="confirmPassword" placeholder="Confirm Password"
+                        :toggleMask="true" class="w-full mb-4 field" fluid :feedback="false" />
                     <Button type="button" :disabled="isLoading" @click="resetPassword"
                         class="w-full flex justify-center items-center gap-2 text-white brand-button font-medium relative">
                         <i v-if="isLoading" class="pi pi-spinner pi-spin text-white"></i>
@@ -41,7 +41,7 @@
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
-import { showToast } from '@/utils/Helper';
+import { showToast, validateModernPassword } from '@/utils/Helper';
 import { AuthService } from '@/service/AuthService';
 
 const password = ref('');
@@ -83,8 +83,9 @@ const resetPassword = async () => {
 
 const formValidation = () => {
     password.value = password.value.trim();
-    if (password.value === '') {
-        showToast(toast, "error", "Error", "Please enter your password");
+    const passwordValidation = validateModernPassword(password.value);
+    if (passwordValidation !== true) {
+        showToast(toast, "error", "Error", passwordValidation);
         return false;
     }
 
@@ -102,3 +103,9 @@ const formValidation = () => {
     return true;
 };
 </script>
+
+<style scoped>
+.field :deep(.p-inputtext:focus) {
+    border-color: var(--accent-start) !important;
+}
+</style>
